@@ -1,0 +1,2610 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>SOLYAN ARCHIVE · V0.8.6</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+  rel="stylesheet"
+/>
+
+<style>
+:root {
+  --bg-1: #eaf7ff;
+  --bg-2: #c9e8f7;
+  --bg-3: #f8fcff;
+
+  --text-main: #17384d;
+  --text-soft: #6b899d;
+  --text-faint: #8ca8b8;
+
+  --glass-border: rgba(255, 255, 255, .78);
+  --glass-shadow: rgba(80, 145, 177, .16);
+
+  --accent: #78cce9;
+  --accent-strong: #4eb9df;
+  --success: #65c89a;
+
+  --display-font:
+    "Space Grotesk",
+    "Noto Sans SC",
+    sans-serif;
+
+  --body-font:
+    Inter,
+    "Noto Sans SC",
+    "Segoe UI",
+    sans-serif;
+
+  --mono-font:
+    "IBM Plex Mono",
+    monospace;
+
+  --transition:
+    260ms cubic-bezier(.2, .75, .25, 1);
+}
+
+/* =========================================================
+   Reset
+========================================================= */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  overflow: hidden;
+
+  color: var(--text-main);
+  font-family: var(--body-font);
+
+  background:
+    radial-gradient(
+      circle at 15% 18%,
+      rgba(255, 255, 255, .95) 0%,
+      rgba(255, 255, 255, 0) 30%
+    ),
+    radial-gradient(
+      circle at 82% 12%,
+      rgba(255, 255, 255, .68) 0%,
+      rgba(255, 255, 255, 0) 28%
+    ),
+    radial-gradient(
+      circle at 70% 82%,
+      rgba(119, 205, 235, .24) 0%,
+      rgba(119, 205, 235, 0) 35%
+    ),
+    linear-gradient(
+      135deg,
+      var(--bg-1),
+      var(--bg-2) 48%,
+      var(--bg-3)
+    );
+
+  transition:
+    background 700ms ease,
+    color 700ms ease;
+}
+
+button {
+  font: inherit;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--accent-strong);
+  outline-offset: 4px;
+}
+
+button:disabled {
+  cursor: default;
+}
+
+/* =========================================================
+   Main scene
+========================================================= */
+
+.scene {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.scene::before,
+.scene::after {
+  content: "";
+
+  position: absolute;
+  pointer-events: none;
+  z-index: -4;
+}
+
+.scene::before {
+  width: 48vw;
+  height: 48vw;
+
+  left: -18vw;
+  bottom: -24vw;
+
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .34);
+
+  filter: blur(10px);
+}
+
+.scene::after {
+  width: 40vw;
+  height: 40vw;
+
+  right: -16vw;
+  top: 24vh;
+
+  border-radius: 50%;
+  background: rgba(115, 205, 238, .13);
+
+  filter: blur(12px);
+}
+
+/* =========================================================
+   Ambient glass atmosphere
+========================================================= */
+
+.ambient-light {
+  position: absolute;
+  pointer-events: none;
+  z-index: -3;
+
+  border-radius: 50%;
+  filter: blur(65px);
+
+  opacity: .5;
+  animation: ambientFloat 22s ease-in-out infinite alternate;
+}
+
+.ambient-light-one {
+  width: 38vw;
+  height: 24vw;
+
+  left: -8vw;
+  top: 8vh;
+
+  background: rgba(255, 255, 255, .4);
+}
+
+.ambient-light-two {
+  width: 32vw;
+  height: 28vw;
+
+  right: -8vw;
+  bottom: 4vh;
+
+  background: rgba(103, 201, 235, .2);
+
+  animation-delay: -8s;
+}
+
+@keyframes ambientFloat {
+  from {
+    transform: translate3d(-2%, 0, 0) scale(1);
+  }
+
+  to {
+    transform: translate3d(4%, -3%, 0) scale(1.08);
+  }
+}
+
+/* =========================================================
+   Subtle floating particles
+========================================================= */
+
+.ambient-particles {
+  position: absolute;
+  inset: 0;
+
+  z-index: -2;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.ambient-particle {
+  position: absolute;
+
+  width: 3px;
+  height: 3px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 255, 255, .9),
+      rgba(120, 204, 233, .15) 65%,
+      transparent 100%
+    );
+
+  box-shadow:
+    0 0 10px rgba(255, 255, 255, .4),
+    0 0 18px rgba(120, 204, 233, .12);
+
+  opacity: 0;
+
+  animation:
+    particleFloat 24s ease-in-out infinite,
+    particlePulse 6s ease-in-out infinite alternate;
+}
+
+.ambient-particle:nth-child(1) {
+  left: 12%;
+  top: 32%;
+  animation-delay: -4s, -2s;
+  animation-duration: 27s, 7s;
+}
+
+.ambient-particle:nth-child(2) {
+  left: 24%;
+  top: 72%;
+  width: 2px;
+  height: 2px;
+  animation-delay: -13s, -4s;
+  animation-duration: 32s, 8s;
+}
+
+.ambient-particle:nth-child(3) {
+  left: 41%;
+  top: 18%;
+  animation-delay: -8s, -1s;
+  animation-duration: 29s, 6s;
+}
+
+.ambient-particle:nth-child(4) {
+  left: 57%;
+  top: 66%;
+  width: 4px;
+  height: 4px;
+  animation-delay: -17s, -3s;
+  animation-duration: 35s, 9s;
+}
+
+.ambient-particle:nth-child(5) {
+  left: 71%;
+  top: 27%;
+  width: 2px;
+  height: 2px;
+  animation-delay: -6s, -5s;
+  animation-duration: 26s, 7s;
+}
+
+.ambient-particle:nth-child(6) {
+  left: 84%;
+  top: 58%;
+  animation-delay: -21s, -2s;
+  animation-duration: 31s, 8s;
+}
+
+.ambient-particle:nth-child(7) {
+  left: 91%;
+  top: 16%;
+  width: 2px;
+  height: 2px;
+  animation-delay: -11s, -4s;
+  animation-duration: 28s, 6s;
+}
+
+@keyframes particleFloat {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+  }
+
+  18% {
+    opacity: .22;
+  }
+
+  50% {
+    opacity: .12;
+    transform: translate3d(16px, -18px, 0);
+  }
+
+  82% {
+    opacity: .18;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(-12px, -42px, 0);
+  }
+}
+
+@keyframes particlePulse {
+  from {
+    filter: blur(.2px);
+  }
+
+  to {
+    filter: blur(1.5px);
+  }
+}
+
+/* =========================================================
+   Floating glass bubbles
+========================================================= */
+
+.memory-bubbles {
+  position: absolute;
+  inset: 0;
+
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.memory-bubble {
+  position: absolute;
+  bottom: -180px;
+
+  border: 1px solid rgba(255, 255, 255, .3);
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 30% 22%,
+      rgba(255, 255, 255, .35),
+      rgba(255, 255, 255, .04) 28%,
+      transparent 65%
+    );
+
+  box-shadow:
+    inset 0 0 18px rgba(255, 255, 255, .12),
+    0 0 25px rgba(112, 199, 230, .045);
+
+  opacity: 0;
+
+  animation:
+    bubbleRise linear infinite,
+    bubbleSway ease-in-out infinite alternate;
+}
+
+.memory-bubble:nth-child(1) {
+  width: 74px;
+  height: 74px;
+  left: 8%;
+  animation-duration: 34s, 8s;
+  animation-delay: -12s, -3s;
+}
+
+.memory-bubble:nth-child(2) {
+  width: 24px;
+  height: 24px;
+  left: 19%;
+  animation-duration: 26s, 6s;
+  animation-delay: -8s, -2s;
+}
+
+.memory-bubble:nth-child(3) {
+  width: 128px;
+  height: 128px;
+  left: 32%;
+  animation-duration: 45s, 10s;
+  animation-delay: -28s, -5s;
+}
+
+.memory-bubble:nth-child(4) {
+  width: 42px;
+  height: 42px;
+  left: 48%;
+  animation-duration: 30s, 7s;
+  animation-delay: -16s, -3s;
+}
+
+.memory-bubble:nth-child(5) {
+  width: 92px;
+  height: 92px;
+  left: 63%;
+  animation-duration: 39s, 9s;
+  animation-delay: -23s, -4s;
+}
+
+.memory-bubble:nth-child(6) {
+  width: 21px;
+  height: 21px;
+  left: 76%;
+  animation-duration: 25s, 6s;
+  animation-delay: -5s, -2s;
+}
+
+.memory-bubble:nth-child(7) {
+  width: 150px;
+  height: 150px;
+  left: 88%;
+  animation-duration: 48s, 11s;
+  animation-delay: -35s, -6s;
+}
+
+.memory-bubble:nth-child(8) {
+  width: 48px;
+  height: 48px;
+  left: 56%;
+  animation-duration: 32s, 8s;
+  animation-delay: -20s, -4s;
+}
+
+@keyframes bubbleRise {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(.9);
+  }
+
+  12% {
+    opacity: .34;
+  }
+
+  75% {
+    opacity: .2;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(0, -115vh, 0) scale(1.12);
+  }
+}
+
+@keyframes bubbleSway {
+  from {
+    margin-left: -12px;
+  }
+
+  to {
+    margin-left: 18px;
+  }
+}
+
+/* =========================================================
+   Refraction spots
+========================================================= */
+
+.refraction-spot {
+  position: absolute;
+  pointer-events: none;
+  z-index: -2;
+
+  border: 1px solid rgba(255, 255, 255, .16);
+
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(255, 255, 255, .12),
+      rgba(255, 255, 255, 0) 70%
+    );
+
+  filter: blur(1px);
+  opacity: .42;
+
+  animation: spotDrift 42s ease-in-out infinite alternate;
+}
+
+.refraction-spot.one {
+  width: 320px;
+  height: 170px;
+
+  top: 16%;
+  right: 13%;
+
+  border-radius: 52% 48% 60% 40%;
+  transform: rotate(-18deg);
+}
+
+.refraction-spot.two {
+  width: 230px;
+  height: 340px;
+
+  left: -90px;
+  bottom: 8%;
+
+  border-radius: 46% 54% 38% 62%;
+  transform: rotate(28deg);
+
+  animation-delay: -15s;
+}
+
+.refraction-spot.three {
+  width: 170px;
+  height: 170px;
+
+  right: 29%;
+  bottom: -60px;
+
+  border-radius: 50%;
+
+  animation-delay: -25s;
+}
+
+@keyframes spotDrift {
+  from {
+    translate: 0 0;
+  }
+
+  to {
+    translate: 28px -22px;
+  }
+}
+
+/* =========================================================
+   Glass material
+========================================================= */
+
+.glass {
+  position: relative;
+
+  border: 1px solid var(--glass-border);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, .52),
+      rgba(255, 255, 255, .18)
+    );
+
+  box-shadow:
+    0 14px 35px var(--glass-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, .72),
+    inset 0 -1px 0 rgba(255, 255, 255, .18);
+
+  backdrop-filter: blur(20px) saturate(125%);
+  -webkit-backdrop-filter: blur(20px) saturate(125%);
+}
+
+/* =========================================================
+   Interactive feedback
+========================================================= */
+
+.interactive {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition),
+    background var(--transition),
+    border-color var(--transition);
+}
+
+.interactive:hover {
+  box-shadow:
+    0 17px 38px rgba(75, 157, 193, .2),
+    inset 0 1px 0 rgba(255, 255, 255, .9),
+    inset 0 -1px 0 rgba(255, 255, 255, .2);
+}
+
+.interactive.is-pressed {
+  transform:
+    perspective(500px)
+    rotateX(3deg)
+    rotateY(-2deg)
+    translateY(2px)
+    scale(.985);
+}
+
+/* 默认不扫光 */
+
+.interactive::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      112deg,
+      transparent 20%,
+      rgba(255, 255, 255, .72) 48%,
+      transparent 76%
+    );
+
+  transform: translateX(-135%);
+  opacity: 0;
+}
+
+/* 只有点击时才扫光 */
+
+.interactive.is-sweeping::after {
+  animation: sweepLight 720ms cubic-bezier(.2, .65, .25, 1);
+}
+
+@keyframes sweepLight {
+  0% {
+    transform: translateX(-135%);
+    opacity: 0;
+  }
+
+  18% {
+    opacity: 1;
+  }
+
+  82% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(135%);
+    opacity: 0;
+  }
+}
+
+/* =========================================================
+   Four corners
+========================================================= */
+
+.corner {
+  position: fixed;
+  z-index: 30;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.corner-top-left {
+  top: 30px;
+  left: 34px;
+}
+
+.corner-top-right {
+  top: 30px;
+  right: 34px;
+}
+
+.corner-bottom-left {
+  left: 34px;
+  bottom: 30px;
+}
+
+.corner-bottom-right {
+  right: 34px;
+  bottom: 30px;
+}
+
+/* =========================================================
+   Theme trigger
+========================================================= */
+
+.theme-trigger {
+  width: 48px;
+  height: 48px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 15px;
+
+  color: var(--text-main);
+  cursor: pointer;
+}
+
+/* 线框玻璃四芒星 */
+
+.star-symbol {
+  width: 26px;
+  height: 26px;
+
+  display: block;
+
+  color: currentColor;
+
+  overflow: visible;
+
+  transition:
+    transform 500ms cubic-bezier(.2, .8, .2, 1),
+    filter 300ms ease;
+}
+
+.star-symbol path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.35;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+
+  opacity: .78;
+
+  transition:
+    opacity 300ms ease,
+    stroke-width 300ms ease;
+}
+
+.star-symbol path.inner {
+  stroke-width: 1;
+  opacity: .38;
+}
+
+.theme-trigger:hover .star-symbol {
+  transform: rotate(14deg) scale(1.06);
+  filter: drop-shadow(0 0 8px rgba(120, 204, 233, .28));
+}
+
+.theme-trigger:hover .star-symbol path {
+  opacity: .98;
+}
+
+.theme-trigger:hover .star-symbol path.inner {
+  opacity: .55;
+}
+
+/* =========================================================
+   Language button
+========================================================= */
+
+.language-trigger {
+  min-width: 68px;
+  height: 42px;
+  padding: 0 15px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+  border: 1px solid var(--glass-border);
+
+  color: var(--text-main);
+  background: rgba(255, 255, 255, .27);
+
+  cursor: pointer;
+
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: .12em;
+}
+
+/* =========================================================
+   Bottom labels
+========================================================= */
+
+.corner-label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  color: var(--text-soft);
+
+  font-family: var(--mono-font);
+  font-size: 10px;
+  font-weight: 500;
+
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.corner-label.online::before {
+  content: "";
+
+  width: 5px;
+  height: 5px;
+  flex: 0 0 auto;
+
+  border-radius: 50%;
+  background: var(--success);
+
+  box-shadow:
+    0 0 8px rgba(101, 200, 154, .85),
+    0 0 16px rgba(101, 200, 154, .38);
+}
+
+/* =========================================================
+   Theme menu
+========================================================= */
+
+.theme-menu {
+  position: fixed;
+  z-index: 40;
+
+  top: 88px;
+  left: 34px;
+
+  width: 302px;
+  padding: 10px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  border-radius: 18px;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transform: translateY(-8px);
+
+  transition:
+    opacity 220ms ease,
+    visibility 220ms ease,
+    transform 220ms ease;
+}
+
+.theme-menu.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+
+  transform: translateY(0);
+}
+
+.theme-menu-title {
+  padding: 9px 12px 8px;
+
+  color: var(--text-faint);
+
+  font-family: var(--mono-font);
+  font-size: 9px;
+  font-weight: 600;
+
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.theme-option {
+  position: relative;
+
+  min-height: 66px;
+  padding: 11px 12px;
+
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  border: 1px solid transparent;
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, .2);
+  color: var(--text-main);
+
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.theme-option:hover {
+  background: rgba(255, 255, 255, .46);
+  border-color: rgba(255, 255, 255, .65);
+}
+
+.theme-option.active {
+  background: rgba(255, 255, 255, .55);
+  border-color: rgba(255, 255, 255, .85);
+}
+
+.theme-color {
+  width: 15px;
+  height: 15px;
+  flex: 0 0 auto;
+
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, .8);
+
+  box-shadow:
+    inset 0 1px 3px rgba(255, 255, 255, .6);
+}
+
+.theme-color.ice {
+  background: linear-gradient(135deg, #f7fdff, #73c9e9);
+}
+
+.theme-color.mint {
+  background: linear-gradient(135deg, #f4fff9, #87d8bd);
+}
+
+.theme-color.lilac {
+  background: linear-gradient(135deg, #faf7ff, #b6a7e8);
+}
+
+.theme-color.dusk {
+  background: linear-gradient(135deg, #d5e1ef, #7187aa);
+}
+
+.theme-copy {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.theme-name {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  line-height: 1.2;
+}
+
+.theme-description {
+  color: var(--text-soft);
+
+  font-size: 9px;
+  font-weight: 500;
+  line-height: 1.55;
+  letter-spacing: .01em;
+}
+
+/* =========================================================
+   Main content
+========================================================= */
+
+.main-content {
+  position: relative;
+  z-index: 5;
+
+  min-height: 100vh;
+  padding: 90px 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content-inner {
+  width: min(880px, 90vw);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: center;
+}
+
+/* =========================================================
+   S Logo
+========================================================= */
+
+.logo-mark {
+  position: relative;
+
+  width: 106px;
+  height: 106px;
+  margin-bottom: 27px;
+
+  display: grid;
+  place-items: center;
+
+  color: var(--text-main);
+
+  animation: logoBreathing 7s ease-in-out infinite;
+}
+
+.logo-mark::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  border: 1px solid rgba(255, 255, 255, .8);
+  border-radius: 34px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, .42),
+      rgba(255, 255, 255, .08)
+    );
+
+  box-shadow:
+    0 18px 45px rgba(75, 157, 193, .13),
+    inset 0 1px 0 rgba(255, 255, 255, .75);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  transform: rotate(8deg);
+}
+
+.logo-letter {
+  position: relative;
+  z-index: 1;
+
+  font-family: var(--display-font);
+
+  font-size: 76px;
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: -.12em;
+
+  transform: translateX(-3px);
+
+  text-shadow:
+    0 2px 0 rgba(255, 255, 255, .6),
+    0 8px 24px rgba(75, 157, 193, .13);
+}
+
+@keyframes logoBreathing {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+/* =========================================================
+   Brand title
+========================================================= */
+
+.creator-name {
+  color: var(--text-main);
+
+  font-family: var(--display-font);
+  font-size: clamp(27px, 4vw, 44px);
+  line-height: 1;
+  font-weight: 600;
+
+  letter-spacing: .22em;
+  text-indent: .22em;
+}
+
+/* =========================================================
+   Categories
+========================================================= */
+
+.creator-category {
+  margin-top: 18px;
+
+  color: var(--text-soft);
+
+  font-family: var(--mono-font);
+  font-size: 10px;
+  font-weight: 500;
+
+  letter-spacing: .13em;
+  text-indent: .13em;
+}
+
+/* =========================================================
+   Tagline
+========================================================= */
+
+.tagline {
+  max-width: 620px;
+  margin-top: 28px;
+
+  color: var(--text-faint);
+
+  font-family: var(--display-font);
+  font-size: 13px;
+  line-height: 1.8;
+
+  letter-spacing: .04em;
+}
+
+/* =========================================================
+   Enter button
+========================================================= */
+
+.action-row {
+  margin-top: 39px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.enter-button {
+  position: relative;
+  overflow: hidden;
+
+  min-width: 250px;
+  height: 64px;
+
+  padding: 0 23px 0 29px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+
+  border-radius: 17px;
+  border: 1px solid var(--glass-border);
+
+  color: var(--text-main);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, .58),
+      rgba(255, 255, 255, .25)
+    );
+
+  box-shadow:
+    0 15px 35px rgba(75, 157, 193, .15),
+    inset 0 1px 0 rgba(255, 255, 255, .8),
+    inset 0 -1px 0 rgba(255, 255, 255, .2);
+
+  backdrop-filter: blur(20px) saturate(130%);
+  -webkit-backdrop-filter: blur(20px) saturate(130%);
+
+  cursor: pointer;
+
+  font-family: var(--display-font);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .12em;
+
+  transition:
+    transform 300ms cubic-bezier(.2, .8, .2, 1),
+    box-shadow 300ms ease,
+    border-color 300ms ease,
+    background 300ms ease;
+}
+
+.enter-button:hover {
+  transform: translateY(-2px);
+
+  border-color: rgba(255, 255, 255, .98);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, .7),
+      rgba(255, 255, 255, .34)
+    );
+
+  box-shadow:
+    0 19px 42px rgba(75, 157, 193, .21),
+    inset 0 1px 0 rgba(255, 255, 255, .95),
+    inset 0 -1px 0 rgba(255, 255, 255, .25);
+}
+
+.enter-button:active {
+  transform: translateY(1px) scale(.985);
+}
+
+/* =========================================================
+   Button text
+========================================================= */
+
+.enter-button-text {
+  position: relative;
+  z-index: 2;
+
+  display: block;
+
+  white-space: nowrap;
+}
+
+/* =========================================================
+   Breathing light
+========================================================= */
+
+.enter-status {
+  position: relative;
+  z-index: 2;
+
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+
+  border-radius: 50%;
+  background: rgba(92, 127, 143, .48);
+
+  box-shadow:
+    0 0 0 rgba(101, 200, 154, 0);
+
+  transition:
+    background 350ms ease,
+    box-shadow 350ms ease,
+    transform 350ms ease;
+}
+
+.enter-status::before,
+.enter-status::after {
+  content: "";
+
+  position: absolute;
+  inset: 50%;
+
+  border-radius: 50%;
+  pointer-events: none;
+
+  transform: translate(-50%, -50%);
+}
+
+.enter-status::before {
+  width: 20px;
+  height: 20px;
+
+  border: 1px solid rgba(120, 204, 233, .24);
+
+  animation: statusPulse 3.2s ease-in-out infinite;
+}
+
+.enter-status::after {
+  width: 30px;
+  height: 30px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(120, 204, 233, .16),
+      rgba(120, 204, 233, 0) 70%
+    );
+
+  animation: statusAura 3.2s ease-in-out infinite;
+}
+
+.enter-button:hover .enter-status::before,
+.enter-button:hover .enter-status::after {
+  animation-duration: 2.2s;
+}
+
+@keyframes statusPulse {
+  0%,
+  100% {
+    opacity: .3;
+    transform: translate(-50%, -50%) scale(.7);
+  }
+
+  50% {
+    opacity: .9;
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+}
+
+@keyframes statusAura {
+  0%,
+  100% {
+    opacity: .35;
+    transform: translate(-50%, -50%) scale(.75);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.3);
+  }
+}
+
+/* 点击后呼吸灯短暂充能 */
+
+.enter-button.is-entered .enter-status {
+  background: var(--accent-strong);
+
+  box-shadow:
+    0 0 8px rgba(78, 185, 223, .85),
+    0 0 22px rgba(78, 185, 223, .48);
+
+  transform: scale(1.2);
+}
+
+.enter-button.is-entered .enter-status::before {
+  animation:
+    statusCharge 900ms ease-out forwards;
+}
+
+.enter-button.is-entered .enter-status::after {
+  animation:
+    statusBurst 900ms ease-out forwards;
+}
+
+@keyframes statusCharge {
+  0% {
+    opacity: .3;
+    transform: translate(-50%, -50%) scale(.7);
+  }
+
+  45% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(2.8);
+  }
+}
+
+@keyframes statusBurst {
+  0% {
+    opacity: .4;
+    transform: translate(-50%, -50%) scale(.8);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(4.5);
+  }
+}
+
+/* =========================================================
+   Archive transition layer
+========================================================= */
+
+.archive-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+
+  display: grid;
+  place-items: center;
+
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(224, 249, 255, .45),
+      rgba(224, 249, 255, 0) 24%
+    ),
+    rgba(225, 247, 255, 0);
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transition:
+    opacity 700ms ease,
+    visibility 700ms ease,
+    background 700ms ease;
+}
+
+.archive-transition.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(224, 249, 255, .78),
+      rgba(224, 249, 255, .1) 38%,
+      rgba(225, 247, 255, .75) 100%
+    );
+}
+
+.refraction-core {
+  position: relative;
+
+  width: 4px;
+  height: 4px;
+
+  border-radius: 50%;
+  background: white;
+
+  opacity: 0;
+  transform: scale(.2);
+
+  box-shadow:
+    0 0 15px rgba(255, 255, 255, .95),
+    0 0 45px rgba(120, 204, 233, .8),
+    0 0 100px rgba(120, 204, 233, .55);
+}
+
+.archive-transition.is-active .refraction-core {
+  animation:
+    refractionCore 1500ms cubic-bezier(.2, .65, .2, 1) forwards;
+}
+
+.refraction-ring {
+  position: absolute;
+
+  width: 90px;
+  height: 90px;
+
+  border: 1px solid rgba(255, 255, 255, .85);
+  border-radius: 50%;
+
+  opacity: 0;
+  transform: scale(.2);
+}
+
+.archive-transition.is-active .refraction-ring {
+  animation:
+    refractionRing 1500ms cubic-bezier(.2, .65, .2, 1) forwards;
+}
+
+@keyframes refractionCore {
+  0% {
+    opacity: 0;
+    transform: scale(.2);
+  }
+
+  18% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  48% {
+    opacity: 1;
+    transform: scale(5);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(80);
+  }
+}
+
+@keyframes refractionRing {
+  0% {
+    opacity: 0;
+    transform: scale(.2);
+  }
+
+  20% {
+    opacity: .9;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(22);
+  }
+}
+
+/* =========================================================
+   Welcome popup
+========================================================= */
+
+.welcome-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+
+  display: grid;
+  place-items: center;
+
+  background: rgba(225, 247, 255, .12);
+
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transition:
+    opacity 450ms ease,
+    visibility 450ms ease;
+}
+
+.welcome-backdrop.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.welcome-panel {
+  position: relative;
+
+  width: min(440px, calc(100vw - 42px));
+  min-height: 238px;
+
+  padding: 34px 36px 32px;
+
+  border: 1px solid rgba(255, 255, 255, .82);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, .66),
+      rgba(255, 255, 255, .22)
+    );
+
+  box-shadow:
+    0 28px 80px rgba(80, 145, 177, .2),
+    inset 0 1px 0 rgba(255, 255, 255, .9),
+    inset 0 -1px 0 rgba(255, 255, 255, .25);
+
+  backdrop-filter: blur(30px) saturate(135%);
+  -webkit-backdrop-filter: blur(30px) saturate(135%);
+
+  clip-path: polygon(
+    0 0,
+    calc(100% - 22px) 0,
+    100% 22px,
+    100% 100%,
+    0 100%
+  );
+
+  transform: translateY(18px) scale(.96);
+
+  transition:
+    transform 550ms cubic-bezier(.2, .8, .2, 1);
+}
+
+.welcome-backdrop.is-visible .welcome-panel {
+  transform: translateY(0) scale(1);
+}
+
+.welcome-panel::before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 22px;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(120, 204, 233, .8),
+      rgba(255, 255, 255, .15),
+      transparent
+    );
+}
+
+.welcome-panel::after {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  width: 22px;
+  height: 22px;
+
+  border-left: 1px solid rgba(255, 255, 255, .6);
+  border-bottom: 1px solid rgba(255, 255, 255, .6);
+
+  background: rgba(120, 204, 233, .12);
+}
+
+.welcome-close {
+  position: absolute;
+
+  top: 15px;
+  right: 17px;
+
+  width: 28px;
+  height: 28px;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid rgba(255, 255, 255, .55);
+  border-radius: 9px;
+
+  color: var(--text-soft);
+  background: rgba(255, 255, 255, .2);
+
+  cursor: pointer;
+
+  font-size: 17px;
+  line-height: 1;
+
+  transition:
+    background 220ms ease,
+    color 220ms ease,
+    transform 220ms ease;
+}
+
+.welcome-close:hover {
+  color: var(--text-main);
+  background: rgba(255, 255, 255, .52);
+  transform: rotate(8deg);
+}
+
+.welcome-kicker {
+  color: var(--accent-strong);
+
+  font-family: var(--mono-font);
+  font-size: 9px;
+  font-weight: 600;
+
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.welcome-title {
+  margin-top: 19px;
+
+  color: var(--text-main);
+
+  font-family: var(--display-font);
+  font-size: 19px;
+  font-weight: 600;
+
+  letter-spacing: .06em;
+}
+
+.welcome-copy {
+  margin-top: 14px;
+
+  color: var(--text-soft);
+
+  font-family: var(--display-font);
+  font-size: 12px;
+  line-height: 1.9;
+
+  letter-spacing: .03em;
+}
+
+.welcome-signature {
+  margin-top: 24px;
+
+  color: var(--text-faint);
+
+  font-family: var(--mono-font);
+  font-size: 9px;
+  letter-spacing: .1em;
+}
+
+.welcome-progress {
+  position: absolute;
+
+  left: 36px;
+  right: 36px;
+  bottom: 15px;
+
+  height: 1px;
+
+  overflow: hidden;
+
+  background: rgba(120, 204, 233, .12);
+}
+
+.welcome-progress::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background: var(--accent-strong);
+
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+.welcome-backdrop.is-visible .welcome-progress::before {
+  animation: welcomeProgress 4.2s linear forwards;
+}
+
+@keyframes welcomeProgress {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* =========================================================
+   Themes
+========================================================= */
+
+body.theme-mint {
+  --bg-1: #edfff8;
+  --bg-2: #c9eee1;
+  --bg-3: #f8fffc;
+
+  --text-main: #214b43;
+  --text-soft: #72998e;
+  --text-faint: #9bb9ae;
+
+  --accent: #83d7bd;
+  --accent-strong: #5fc5a5;
+}
+
+body.theme-lilac {
+  --bg-1: #f6f2ff;
+  --bg-2: #ddd5f5;
+  --bg-3: #fcfaff;
+
+  --text-main: #3d3a5b;
+  --text-soft: #8d88ae;
+  --text-faint: #aaa5c5;
+
+  --accent: #b6a7e8;
+  --accent-strong: #9987d7;
+}
+
+body.theme-dusk {
+  --bg-1: #e8eef7;
+  --bg-2: #b9c9df;
+  --bg-3: #f7faff;
+
+  --text-main: #293b55;
+  --text-soft: #778ca8;
+  --text-faint: #9baec4;
+
+  --accent: #8faed4;
+  --accent-strong: #6f91bd;
+}
+
+/* =========================================================
+   Mobile
+========================================================= */
+
+@media (max-width: 700px) {
+  body {
+    overflow: auto;
+  }
+
+  .scene {
+    min-height: 100svh;
+  }
+
+  .corner-top-left {
+    top: 20px;
+    left: 20px;
+  }
+
+  .corner-top-right {
+    top: 20px;
+    right: 20px;
+  }
+
+  .corner-bottom-left {
+    left: 20px;
+    bottom: 22px;
+  }
+
+  .corner-bottom-right {
+    right: 20px;
+    bottom: 22px;
+  }
+
+  .corner-label {
+    font-size: 8px;
+    letter-spacing: .05em;
+  }
+
+  .main-content {
+    min-height: 100svh;
+    padding: 110px 22px 100px;
+  }
+
+  .content-inner {
+    width: 100%;
+  }
+
+  .logo-mark {
+    width: 88px;
+    height: 88px;
+  }
+
+  .logo-letter {
+    font-size: 63px;
+  }
+
+  .creator-name {
+    font-size: 30px;
+    letter-spacing: .16em;
+    text-indent: .16em;
+  }
+
+  .creator-category {
+    font-size: 8px;
+    letter-spacing: .08em;
+    text-indent: .08em;
+  }
+
+  .tagline {
+    max-width: 300px;
+    font-size: 11px;
+    line-height: 1.9;
+  }
+
+  .enter-button {
+    min-width: 220px;
+    height: 58px;
+    padding-left: 23px;
+  }
+
+  .theme-menu {
+    top: 78px;
+    left: 20px;
+    width: min(302px, calc(100vw - 40px));
+  }
+
+  .theme-description {
+    font-size: 8px;
+  }
+
+  .welcome-panel {
+    min-height: 225px;
+    padding: 30px 27px 30px;
+  }
+
+  .welcome-title {
+    font-size: 17px;
+  }
+
+  .welcome-copy {
+    font-size: 11px;
+  }
+
+  .welcome-progress {
+    left: 27px;
+    right: 27px;
+  }
+}
+
+/* =========================================================
+   Reduced motion
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="scene">
+
+  <!-- Ambient atmosphere -->
+  <div class="ambient-light ambient-light-one"></div>
+  <div class="ambient-light ambient-light-two"></div>
+
+  <!-- Subtle floating particles -->
+  <div class="ambient-particles" aria-hidden="true">
+    <span class="ambient-particle"></span>
+    <span class="ambient-particle"></span>
+    <span class="ambient-particle"></span>
+    <span class="ambient-particle"></span>
+    <span class="ambient-particle"></span>
+    <span class="ambient-particle"></span>
+    <span class="ambient-particle"></span>
+  </div>
+
+  <!-- Floating memory bubbles -->
+  <div class="memory-bubbles" aria-hidden="true">
+    <div class="memory-bubble"></div>
+    <div class="memory-bubble"></div>
+    <div class="memory-bubble"></div>
+    <div class="memory-bubble"></div>
+    <div class="memory-bubble"></div>
+    <div class="memory-bubble"></div>
+    <div class="memory-bubble"></div>
+    <div class="memory-bubble"></div>
+  </div>
+
+  <!-- Subtle refraction spots -->
+  <div class="refraction-spot one" aria-hidden="true"></div>
+  <div class="refraction-spot two" aria-hidden="true"></div>
+  <div class="refraction-spot three" aria-hidden="true"></div>
+
+  <!-- Top-left: Theme selector -->
+
+  <div class="corner corner-top-left">
+
+    <button
+      class="theme-trigger glass interactive"
+      id="themeTrigger"
+      aria-label="Open theme selector"
+      aria-expanded="false"
+    >
+      <svg
+        class="star-symbol"
+        viewBox="0 0 48 48"
+        aria-hidden="true"
+      >
+        <path
+          d="M24 2 L29.5 18.5 L46 24 L29.5 29.5 L24 46 L18.5 29.5 L2 24 L18.5 18.5 Z"
+        />
+
+        <path
+          class="inner"
+          d="M24 12 L28 20 L36 24 L28 28 L24 36 L20 28 L12 24 L20 20 Z"
+        />
+      </svg>
+    </button>
+
+  </div>
+
+  <!-- Top-right: Language -->
+
+  <div class="corner corner-top-right">
+
+    <button
+      class="language-trigger interactive"
+      id="languageTrigger"
+      aria-label="Switch language"
+    >
+      中 / EN
+    </button>
+
+  </div>
+
+  <!-- Bottom-left: Version -->
+
+  <div class="corner corner-bottom-left">
+
+    <div class="corner-label" id="versionLabel">
+      SOLYAN ARCHIVE · V0.8.6
+    </div>
+
+  </div>
+
+  <!-- Bottom-right: System status -->
+
+  <div class="corner corner-bottom-right">
+
+    <div class="corner-label online" id="systemLabel">
+      系统在线
+    </div>
+
+  </div>
+
+  <!-- Theme menu -->
+
+  <div
+    class="theme-menu glass"
+    id="themeMenu"
+  >
+
+    <div
+      class="theme-menu-title"
+      id="themeMenuTitle"
+    >
+      选择视觉主题
+    </div>
+
+    <button
+      class="theme-option interactive active"
+      data-theme="ice"
+    >
+      <span class="theme-color ice"></span>
+
+      <span class="theme-copy">
+        <span class="theme-name">
+          冰蓝记忆
+        </span>
+
+        <span class="theme-description">
+          清澈、安静的蓝色氛围，像被玻璃保存的遥远记忆。
+        </span>
+      </span>
+    </button>
+
+    <button
+      class="theme-option interactive"
+      data-theme="mint"
+    >
+      <span class="theme-color mint"></span>
+
+      <span class="theme-copy">
+        <span class="theme-name">
+          静谧薄荷
+        </span>
+
+        <span class="theme-description">
+          柔和的绿色调，带来轻盈、平静而自然的感觉。
+        </span>
+      </span>
+    </button>
+
+    <button
+      class="theme-option interactive"
+      data-theme="lilac"
+    >
+      <span class="theme-color lilac"></span>
+
+      <span class="theme-copy">
+        <span class="theme-name">
+          柔雾紫罗兰
+        </span>
+
+        <span class="theme-description">
+          淡紫色的梦幻氛围，适合朦胧、诗意的记忆片段。
+        </span>
+      </span>
+    </button>
+
+    <button
+      class="theme-option interactive"
+      data-theme="dusk"
+    >
+      <span class="theme-color dusk"></span>
+
+      <span class="theme-copy">
+        <span class="theme-name">
+          靛蓝暮色
+        </span>
+
+        <span class="theme-description">
+          更深沉的蓝灰色调，像黄昏时分逐渐沉静的档案。
+        </span>
+      </span>
+    </button>
+
+  </div>
+
+  <!-- Main content -->
+
+  <main class="main-content">
+
+    <div class="content-inner">
+
+      <!-- S logo -->
+
+      <div class="logo-mark">
+        <div class="logo-letter">S</div>
+      </div>
+
+      <!-- Brand -->
+
+      <div class="creator-name">
+        SOLYAN ARCHIVE
+      </div>
+
+      <!-- Categories -->
+
+      <div
+        class="creator-category"
+        id="creatorCategory"
+      >
+        GAMES · STORIES · MEMORIES
+      </div>
+
+      <!-- Tagline -->
+
+      <div
+        class="tagline"
+        id="tagline"
+      >
+        隔着玻璃，保存那些醒来后仍未消散的梦。
+      </div>
+
+      <!-- Entry button -->
+
+      <div class="action-row">
+
+        <button
+          class="enter-button interactive"
+          id="enterButton"
+          aria-label="Begin exploration"
+        >
+
+          <span
+            class="enter-button-text"
+            id="enterButtonText"
+          >
+            开始探索
+          </span>
+
+          <!-- 呼吸灯，不是箭头 -->
+
+          <span
+            class="enter-status"
+            aria-hidden="true"
+          ></span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</div>
+
+<!-- Glass refraction transition -->
+
+<div
+  class="archive-transition"
+  id="archiveTransition"
+  aria-hidden="true"
+>
+  <div class="refraction-core"></div>
+  <div class="refraction-ring"></div>
+</div>
+
+<!-- Welcome popup -->
+
+<div
+  class="welcome-backdrop"
+  id="welcomeBackdrop"
+  aria-hidden="true"
+>
+
+  <section
+    class="welcome-panel"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="welcomeTitle"
+  >
+
+    <button
+      class="welcome-close"
+      id="welcomeClose"
+      aria-label="Close welcome message"
+    >
+      ×
+    </button>
+
+    <div
+      class="welcome-kicker"
+      id="welcomeKicker"
+    >
+      档案访问许可
+    </div>
+
+    <h2
+      class="welcome-title"
+      id="welcomeTitle"
+    >
+      欢迎来到档案馆
+    </h2>
+
+    <p
+      class="welcome-copy"
+      id="welcomeCopy"
+    >
+      保存游戏、故事与记忆，<br>
+      记录每一次亲身体验。
+    </p>
+
+    <div
+      class="welcome-signature"
+      id="welcomeSignature"
+    >
+      — SOLYAN ARCHIVE
+    </div>
+
+    <div class="welcome-progress"></div>
+
+  </section>
+
+</div>
+
+<script>
+(() => {
+  "use strict";
+
+  const body = document.body;
+
+  const themeTrigger =
+    document.getElementById("themeTrigger");
+
+  const themeMenu =
+    document.getElementById("themeMenu");
+
+  const themeOptions =
+    document.querySelectorAll(".theme-option");
+
+  const languageTrigger =
+    document.getElementById("languageTrigger");
+
+  const enterButton =
+    document.getElementById("enterButton");
+
+  const enterButtonText =
+    document.getElementById("enterButtonText");
+
+  const versionLabel =
+    document.getElementById("versionLabel");
+
+  const systemLabel =
+    document.getElementById("systemLabel");
+
+  const themeMenuTitle =
+    document.getElementById("themeMenuTitle");
+
+  const tagline =
+    document.getElementById("tagline");
+
+  const archiveTransition =
+    document.getElementById("archiveTransition");
+
+  const welcomeBackdrop =
+    document.getElementById("welcomeBackdrop");
+
+  const welcomeClose =
+    document.getElementById("welcomeClose");
+
+  const welcomeKicker =
+    document.getElementById("welcomeKicker");
+
+  const welcomeTitle =
+    document.getElementById("welcomeTitle");
+
+  const welcomeCopy =
+    document.getElementById("welcomeCopy");
+
+  const welcomeSignature =
+    document.getElementById("welcomeSignature");
+
+  let isEnglish = false;
+  let isEntering = false;
+  let welcomeTimer = null;
+
+  const themeContent = {
+    ice: {
+      zh: {
+        name: "冰蓝记忆",
+        description:
+          "清澈、安静的蓝色氛围，像被玻璃保存的遥远记忆。"
+      },
+      en: {
+        name: "Ice Memory",
+        description:
+          "A clear and quiet blue atmosphere, like distant memories preserved through glass."
+      }
+    },
+
+    mint: {
+      zh: {
+        name: "静谧薄荷",
+        description:
+          "柔和的绿色调，带来轻盈、平静而自然的感觉。"
+      },
+      en: {
+        name: "Quiet Mint",
+        description:
+          "A gentle green atmosphere with a light, calm and natural feeling."
+      }
+    },
+
+    lilac: {
+      zh: {
+        name: "柔雾紫罗兰",
+        description:
+          "淡紫色的梦幻氛围，适合朦胧、诗意的记忆片段。"
+      },
+      en: {
+        name: "Soft Lilac",
+        description:
+          "A dreamy lilac atmosphere for hazy and poetic fragments of memory."
+      }
+    },
+
+    dusk: {
+      zh: {
+        name: "靛蓝暮色",
+        description:
+          "更深沉的蓝灰色调，像黄昏时分逐渐沉静的档案。"
+      },
+      en: {
+        name: "Blue Dusk",
+        description:
+          "A deeper blue-gray atmosphere, like an archive settling into twilight."
+      }
+    }
+  };
+
+  /*
+   * Interactive feedback
+   *
+   * 普通 hover 不触发扫光。
+   * 只有点击时主动触发。
+   */
+
+  function triggerClickFeedback(element) {
+    if (!element) return;
+
+    element.classList.remove(
+      "is-pressed",
+      "is-sweeping"
+    );
+
+    void element.offsetWidth;
+
+    element.classList.add(
+      "is-pressed",
+      "is-sweeping"
+    );
+
+    window.setTimeout(() => {
+      element.classList.remove(
+        "is-pressed",
+        "is-sweeping"
+      );
+    }, 850);
+  }
+
+  /*
+   * Theme menu language
+   */
+
+  function updateThemeLanguage() {
+    themeOptions.forEach((option) => {
+      const theme = option.dataset.theme;
+      const language = isEnglish ? "en" : "zh";
+      const content = themeContent[theme][language];
+
+      option.querySelector(".theme-name").textContent =
+        content.name;
+
+      option.querySelector(".theme-description").textContent =
+        content.description;
+    });
+  }
+
+  /*
+   * Interface language
+   */
+
+  function updateInterfaceLanguage() {
+    languageTrigger.textContent =
+      isEnglish
+        ? "EN / 中"
+        : "中 / EN";
+
+    tagline.textContent =
+      isEnglish
+        ? "Dream remembered through glass."
+        : "隔着玻璃，保存那些醒来后仍未消散的梦。";
+
+    enterButtonText.textContent =
+      isEnglish
+        ? "BEGIN EXPLORATION"
+        : "开始探索";
+
+    versionLabel.textContent =
+      "SOLYAN ARCHIVE · V0.8.6";
+
+    systemLabel.textContent =
+      isEnglish
+        ? "System Online"
+        : "系统在线";
+
+    themeMenuTitle.textContent =
+      isEnglish
+        ? "Select Atmosphere"
+        : "选择视觉主题";
+
+    updateThemeLanguage();
+    updateWelcomeLanguage();
+  }
+
+  /*
+   * Theme menu
+   */
+
+  themeTrigger.addEventListener("click", (event) => {
+    event.stopPropagation();
+
+    triggerClickFeedback(themeTrigger);
+
+    const isOpen =
+      themeMenu.classList.toggle("is-open");
+
+    themeTrigger.setAttribute(
+      "aria-expanded",
+      String(isOpen)
+    );
+  });
+
+  themeMenu.addEventListener("click", (event) => {
+    event.stopPropagation();
+  });
+
+  themeOptions.forEach((option) => {
+    option.addEventListener("click", () => {
+      triggerClickFeedback(option);
+
+      const selectedTheme =
+        option.dataset.theme;
+
+      body.classList.remove(
+        "theme-mint",
+        "theme-lilac",
+        "theme-dusk"
+      );
+
+      if (selectedTheme !== "ice") {
+        body.classList.add(
+          `theme-${selectedTheme}`
+        );
+      }
+
+      themeOptions.forEach((item) => {
+        item.classList.toggle(
+          "active",
+          item === option
+        );
+      });
+
+      themeMenu.classList.remove("is-open");
+
+      themeTrigger.setAttribute(
+        "aria-expanded",
+        "false"
+      );
+    });
+  });
+
+  document.addEventListener("click", () => {
+    themeMenu.classList.remove("is-open");
+
+    themeTrigger.setAttribute(
+      "aria-expanded",
+      "false"
+    );
+  });
+
+  /*
+   * Language switching
+   */
+
+  languageTrigger.addEventListener("click", () => {
+    triggerClickFeedback(languageTrigger);
+
+    isEnglish = !isEnglish;
+
+    updateInterfaceLanguage();
+  });
+
+  /*
+   * Welcome popup
+   */
+
+  function showWelcomePopup() {
+    welcomeBackdrop.classList.add("is-visible");
+
+    welcomeBackdrop.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
+    if (welcomeTimer) {
+      window.clearTimeout(welcomeTimer);
+    }
+
+    welcomeTimer = window.setTimeout(() => {
+      closeWelcomePopup();
+    }, 4200);
+  }
+
+  function closeWelcomePopup() {
+    welcomeBackdrop.classList.remove("is-visible");
+
+    welcomeBackdrop.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+    if (welcomeTimer) {
+      window.clearTimeout(welcomeTimer);
+      welcomeTimer = null;
+    }
+  }
+
+  welcomeClose.addEventListener(
+    "click",
+    closeWelcomePopup
+  );
+
+  welcomeBackdrop.addEventListener(
+    "click",
+    (event) => {
+      if (event.target === welcomeBackdrop) {
+        closeWelcomePopup();
+      }
+    }
+  );
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeWelcomePopup();
+    }
+  });
+
+  /*
+   * Welcome popup language
+   */
+
+  function updateWelcomeLanguage() {
+    if (isEnglish) {
+      welcomeKicker.textContent =
+        "ARCHIVE ACCESS GRANTED";
+
+      welcomeTitle.textContent =
+        "WELCOME TO THE ARCHIVE";
+
+      welcomeCopy.innerHTML =
+        "Games, stories, and memories,<br>preserved through play.";
+
+      welcomeSignature.textContent =
+        "— SOLYAN ARCHIVE";
+    } else {
+      welcomeKicker.textContent =
+        "档案访问许可";
+
+      welcomeTitle.textContent =
+        "欢迎来到档案馆";
+
+      welcomeCopy.innerHTML =
+        "保存游戏、故事与记忆，<br>记录每一次亲身体验。";
+
+      welcomeSignature.textContent =
+        "— SOLYAN ARCHIVE";
+    }
+  }
+
+  /*
+   * Enter Archive
+   *
+   * 1. 点击按钮
+   * 2. 触发一次扫光
+   * 3. 呼吸灯短暂充能
+   * 4. 玻璃折射展开
+   * 5. 欢迎弹窗出现
+   */
+
+  enterButton.addEventListener("click", () => {
+    if (isEntering) return;
+
+    isEntering = true;
+
+    triggerClickFeedback(enterButton);
+
+    enterButton.classList.add("is-entered");
+    enterButton.disabled = true;
+
+    enterButtonText.textContent =
+      isEnglish
+        ? "ENTERING ARCHIVE..."
+        : "正在进入档案空间……";
+
+    systemLabel.textContent =
+      isEnglish
+        ? "Opening Archive"
+        : "正在开启档案";
+
+    archiveTransition.classList.add("is-active");
+
+    window.setTimeout(() => {
+      archiveTransition.classList.remove("is-active");
+
+      updateWelcomeLanguage();
+      showWelcomePopup();
+
+      systemLabel.textContent =
+        isEnglish
+          ? "Archive Online"
+          : "档案在线";
+
+      enterButton.disabled = false;
+      enterButton.classList.remove("is-entered");
+
+      enterButtonText.textContent =
+        isEnglish
+          ? "BEGIN EXPLORATION"
+          : "开始探索";
+
+      isEntering = false;
+    }, 1550);
+  });
+
+  /*
+   * Initialize
+   */
+
+  updateInterfaceLanguage();
+
+})();
+</script>
+
+</body>
+</html>
