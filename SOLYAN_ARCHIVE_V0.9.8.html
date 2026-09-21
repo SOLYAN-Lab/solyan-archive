@@ -1,0 +1,2735 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>SOLYAN ARCHIVE · OVERVIEW</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --bg-1: #dceef7;
+      --bg-2: #b9d9e8;
+      --bg-3: #edf5f9;
+
+      --text-main: #17384d;
+      --text-soft: #6b899d;
+      --text-faint: #8ca8b8;
+
+      --glass-border: rgba(255, 255, 255, .78);
+      --glass-bg: rgba(255, 255, 255, .28);
+      --glass-bg-strong: rgba(255, 255, 255, .48);
+
+      --glass-shadow: rgba(80, 145, 177, .16);
+
+      --accent: #78cce9;
+      --accent-strong: #4eb9df;
+      --success: #65c89a;
+      --warning: #e5b96c;
+
+      --display-font:
+        "Space Grotesk",
+        "Noto Sans SC",
+        sans-serif;
+
+      --body-font:
+        Inter,
+        "Noto Sans SC",
+        "Segoe UI",
+        sans-serif;
+
+      --mono-font:
+        "IBM Plex Mono",
+        monospace;
+
+      --transition:
+        260ms cubic-bezier(.2, .75, .25, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow: hidden;
+
+      color: var(--text-main);
+      font-family: var(--body-font);
+
+      background:
+        radial-gradient(
+          ellipse at 8% 8%,
+          rgba(255, 255, 255, .68) 0%,
+          rgba(255, 255, 255, 0) 32%
+        ),
+        radial-gradient(
+          ellipse at 92% 12%,
+          rgba(255, 255, 255, .48) 0%,
+          rgba(255, 255, 255, 0) 30%
+        ),
+        radial-gradient(
+          ellipse at 70% 92%,
+          rgba(120, 190, 218, .20) 0%,
+          rgba(120, 204, 233, 0) 36%
+        ),
+        linear-gradient(
+          135deg,
+          var(--bg-1),
+          var(--bg-2) 48%,
+          var(--bg-3)
+        );
+
+      transition:
+        background 700ms ease,
+        color 700ms ease;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+    }
+
+    button:focus-visible,
+    input:focus-visible {
+      outline: 2px solid var(--accent-strong);
+      outline-offset: 4px;
+    }
+
+    /* =========================================================
+       Main scene
+    ========================================================= */
+
+    .scene {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+
+      isolation: isolate;
+      overflow: hidden;
+    }
+
+    .scene::before,
+    .scene::after {
+      content: "";
+
+      position: absolute;
+      pointer-events: none;
+      z-index: -5;
+
+      border-radius: 50%;
+      filter: blur(30px);
+    }
+
+    .scene::before {
+      width: 62vw;
+      height: 62vw;
+
+      left: -28vw;
+      bottom: -38vw;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(255, 255, 255, .5),
+          rgba(255, 255, 255, 0)
+        );
+    }
+
+    .scene::after {
+      width: 52vw;
+      height: 52vw;
+
+      right: -25vw;
+      top: -25vw;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(255, 255, 255, .6),
+          rgba(120, 204, 233, .08),
+          transparent 70%
+        );
+    }
+
+    /* =========================================================
+       Advanced glass light field
+    ========================================================= */
+
+    .light-field {
+      position: absolute;
+      inset: 0;
+
+      z-index: -4;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .light-ribbon {
+      position: absolute;
+
+      width: 70vw;
+      height: 150vh;
+
+      top: -35vh;
+      left: -15vw;
+
+      border-radius: 50%;
+
+      background:
+        linear-gradient(
+          105deg,
+          transparent 0%,
+          rgba(255, 255, 255, .02) 26%,
+          rgba(255, 255, 255, .42) 45%,
+          rgba(152, 222, 245, .12) 53%,
+          transparent 72%
+        );
+
+      filter: blur(28px);
+      opacity: .65;
+
+      transform: rotate(20deg);
+
+      animation:
+        ribbonDrift 32s ease-in-out infinite alternate;
+    }
+
+    .light-ribbon.two {
+      width: 48vw;
+      left: 48vw;
+      top: -22vh;
+
+      opacity: .38;
+      filter: blur(36px);
+
+      transform: rotate(-24deg);
+
+      animation-delay: -14s;
+      animation-duration: 39s;
+    }
+
+    .light-ribbon.three {
+      width: 35vw;
+      height: 100vh;
+
+      left: 30vw;
+      top: 35vh;
+
+      opacity: .24;
+      filter: blur(45px);
+
+      transform: rotate(65deg);
+
+      animation-delay: -22s;
+      animation-duration: 44s;
+    }
+
+    @keyframes ribbonDrift {
+      from {
+        transform:
+          translate3d(-3%, 0, 0)
+          rotate(20deg)
+          scale(1);
+      }
+
+      to {
+        transform:
+          translate3d(9%, -2%, 0)
+          rotate(24deg)
+          scale(1.08);
+      }
+    }
+
+    .glass-haze {
+      position: absolute;
+      inset: -20%;
+
+      background:
+        linear-gradient(
+          118deg,
+          transparent 20%,
+          rgba(255, 255, 255, .14) 42%,
+          transparent 58%
+        );
+
+      filter: blur(18px);
+      opacity: .4;
+
+      transform: translateX(-35%);
+
+      animation: hazeSweep 28s ease-in-out infinite alternate;
+    }
+
+    @keyframes hazeSweep {
+      from {
+        transform: translateX(-35%) rotate(-5deg);
+      }
+
+      to {
+        transform: translateX(35%) rotate(5deg);
+      }
+    }
+
+    /* =========================================================
+       Glass material
+    ========================================================= */
+
+    .glass {
+      border: 1px solid var(--glass-border);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(255, 255, 255, .5),
+          rgba(255, 255, 255, .18)
+        );
+
+      box-shadow:
+        0 14px 35px var(--glass-shadow),
+        inset 0 1px 0 rgba(255, 255, 255, .72),
+        inset 0 -1px 0 rgba(255, 255, 255, .18);
+
+      backdrop-filter: blur(22px) saturate(108%);
+      -webkit-backdrop-filter: blur(22px) saturate(108%);
+    }
+
+    .interactive {
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+
+      transition:
+        transform var(--transition),
+        box-shadow var(--transition),
+        background var(--transition),
+        border-color var(--transition);
+    }
+
+    .interactive:hover {
+      border-color: rgba(255, 255, 255, .98);
+
+      box-shadow:
+        0 18px 40px rgba(75, 157, 193, .2),
+        inset 0 1px 0 rgba(255, 255, 255, .95),
+        inset 0 -1px 0 rgba(255, 255, 255, .2);
+    }
+
+    .interactive:active {
+      transform:
+        perspective(700px)
+        rotateX(2deg)
+        translateY(2px)
+        scale(.985);
+    }
+
+    .interactive::after {
+      content: "";
+
+      position: absolute;
+      inset: 0;
+
+      z-index: 5;
+      pointer-events: none;
+
+      background:
+        linear-gradient(
+          112deg,
+          transparent 20%,
+          rgba(255, 255, 255, .7) 48%,
+          transparent 76%
+        );
+
+      transform: translateX(-135%);
+      opacity: 0;
+    }
+
+    .interactive.is-sweeping::after {
+      animation: sweepLight 720ms cubic-bezier(.2, .65, .25, 1);
+    }
+
+    @keyframes sweepLight {
+      0% {
+        transform: translateX(-135%);
+        opacity: 0;
+      }
+
+      18% {
+        opacity: 1;
+      }
+
+      82% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateX(135%);
+        opacity: 0;
+      }
+    }
+
+    /* =========================================================
+       Layout
+    ========================================================= */
+
+    .app-shell {
+      position: relative;
+      z-index: 2;
+
+      display: grid;
+      grid-template-columns: 238px minmax(0, 1fr);
+
+      width: 100%;
+      min-height: 100vh;
+
+      padding: 24px;
+      gap: 20px;
+    }
+
+    /* =========================================================
+       Sidebar
+    ========================================================= */
+
+    .sidebar {
+      position: relative;
+
+      display: flex;
+      flex-direction: column;
+
+      min-height: calc(100vh - 48px);
+      padding: 22px 15px;
+
+      border-radius: 26px;
+    }
+
+    .brand-block {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      padding: 4px 7px 24px;
+    }
+
+    .brand-symbol {
+      width: 42px;
+      height: 42px;
+
+      display: grid;
+      place-items: center;
+
+      flex: 0 0 auto;
+
+      border: 1px solid rgba(255, 255, 255, .8);
+      border-radius: 14px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(255, 255, 255, .5),
+          rgba(255, 255, 255, .12)
+        );
+
+      box-shadow:
+        0 8px 20px rgba(75, 157, 193, .1),
+        inset 0 1px 0 rgba(255, 255, 255, .8);
+
+      font-family: var(--display-font);
+      font-size: 27px;
+      font-weight: 500;
+      letter-spacing: -.12em;
+    }
+
+    .brand-copy {
+      min-width: 0;
+    }
+
+    .brand-name {
+      font-family: var(--display-font);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      white-space: nowrap;
+    }
+
+    .brand-subtitle {
+      margin-top: 5px;
+
+      color: var(--text-soft);
+      font-family: var(--mono-font);
+      font-size: 8px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .sidebar-divider {
+      height: 1px;
+      margin: 0 7px 20px;
+
+      background:
+        linear-gradient(
+          90deg,
+          rgba(255, 255, 255, .7),
+          rgba(255, 255, 255, 0)
+        );
+    }
+
+    .nav-group {
+      margin-bottom: 22px;
+    }
+
+    .nav-group-label {
+      margin: 0 7px 10px;
+      padding: 0 3px 9px;
+
+      color: var(--accent-strong);
+      border-bottom: 1px solid rgba(78, 185, 223, .30);
+      font-family: var(--mono-font);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+    }
+
+    .nav-item {
+      position: relative;
+
+      width: 100%;
+      min-height: 42px;
+      padding: 0 11px;
+
+      display: flex;
+      align-items: center;
+      gap: 11px;
+
+      border: 1px solid transparent;
+      border-radius: 13px;
+
+      color: var(--text-soft);
+      background: transparent;
+
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .nav-item:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, .3);
+    }
+
+    .nav-item.active {
+      color: var(--text-main);
+
+      border-color: rgba(255, 255, 255, .7);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(255, 255, 255, .55),
+          rgba(255, 255, 255, .2)
+        );
+
+      box-shadow:
+        0 8px 20px rgba(75, 157, 193, .08),
+        inset 0 1px 0 rgba(255, 255, 255, .7);
+    }
+
+    .nav-item.active::before {
+      content: "";
+
+      position: absolute;
+      left: -1px;
+      top: 10px;
+      bottom: 10px;
+
+      width: 4px;
+      border-radius: 3px;
+
+      background: var(--accent-strong);
+      box-shadow: 0 0 10px rgba(78, 185, 223, .4);
+    }
+
+    .nav-icon {
+      width: 17px;
+      height: 17px;
+
+      display: grid;
+      place-items: center;
+
+      color: currentColor;
+      opacity: .75;
+      font-size: 13px;
+    }
+
+    .nav-label {
+      flex: 1;
+
+      font-family: var(--display-font);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .025em;
+    }
+
+    .nav-count {
+      color: var(--text-faint);
+      font-family: var(--mono-font);
+      font-size: 8px;
+    }
+
+    .sidebar-bottom {
+      margin-top: auto;
+      padding: 18px 8px 2px;
+    }
+
+    .system-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      color: var(--text-soft);
+      font-family: var(--mono-font);
+      font-size: 8px;
+      letter-spacing: .04em;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+
+      border-radius: 50%;
+      background: var(--success);
+
+      box-shadow:
+        0 0 8px rgba(101, 200, 154, .8),
+        0 0 15px rgba(101, 200, 154, .3);
+    }
+
+    .sidebar-version {
+      margin-top: 10px;
+
+      color: var(--text-faint);
+      font-family: var(--mono-font);
+      font-size: 8px;
+      letter-spacing: .06em;
+    }
+
+    /* =========================================================
+       Main area
+    ========================================================= */
+
+    .main-area {
+      min-width: 0;
+      min-height: calc(100vh - 48px);
+
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .topbar {
+      min-height: 72px;
+      padding: 17px 22px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+
+      border-radius: 22px;
+    }
+
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+
+      color: var(--text-faint);
+      font-family: var(--mono-font);
+      font-size: 9px;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+
+    .breadcrumb-current {
+      color: var(--accent-strong);
+      font-weight: 600;
+    }
+
+    .breadcrumb-separator {
+      opacity: .45;
+    }
+
+    .search-shell {
+      position: relative;
+      display: flex;
+      align-items: center;
+      flex: 0 0 auto;
+    }
+
+    .search-trigger {
+      flex: 0 0 auto;
+    }
+
+    .search-form {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      width: min(360px, 42vw);
+      height: 38px;
+      padding: 0 9px 0 12px;
+      border: 1px solid var(--glass-border);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .34);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .65);
+      backdrop-filter: blur(16px) saturate(108%);
+      -webkit-backdrop-filter: blur(16px) saturate(108%);
+    }
+
+    .search-shell.is-open .search-trigger {
+      display: none;
+    }
+
+    .search-shell.is-open .search-form {
+      display: flex;
+      animation: searchExpand 220ms ease both;
+    }
+
+    .search-form-icon {
+      color: var(--accent-strong);
+      font-size: 14px;
+    }
+
+    .search-form input {
+      min-width: 0;
+      flex: 1;
+      border: 0;
+      outline: 0;
+      color: var(--text-main);
+      background: transparent;
+      font-size: 10px;
+    }
+
+    .search-form input::placeholder {
+      color: var(--text-faint);
+    }
+
+    .search-close {
+      color: var(--text-soft);
+      background: transparent;
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .breadcrumb-link {
+      border: 0;
+      padding: 4px 5px;
+      border-radius: 7px;
+      color: var(--accent-strong);
+      background: transparent;
+      cursor: pointer;
+      font: inherit;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      transition: color var(--transition), background var(--transition);
+    }
+
+    .breadcrumb-link:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, .28);
+    }
+
+    @keyframes searchExpand {
+      from { opacity: 0; transform: translateX(-8px) scaleX(.92); }
+      to { opacity: 1; transform: translateX(0) scaleX(1); }
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .topbar-button {
+      width: 38px;
+      height: 38px;
+
+      display: grid;
+      place-items: center;
+
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+
+      color: var(--text-main);
+      background: rgba(255, 255, 255, .25);
+
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .topbar-button.language {
+      width: auto;
+      padding: 0 13px;
+
+      font-family: var(--display-font);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .08em;
+    }
+
+    /* =========================================================
+       Page heading
+    ========================================================= */
+
+    .page-heading {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 20px;
+
+      padding: 7px 5px 0;
+    }
+
+    .page-kicker {
+      display: none;
+      color: var(--accent-strong);
+      font-family: var(--mono-font);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .page-title {
+      color: var(--accent-strong);
+      margin-top: 9px;
+
+      font-family: var(--display-font);
+      font-size: clamp(27px, 3vw, 40px);
+      font-weight: 600;
+      letter-spacing: -.035em;
+      line-height: 1;
+    }
+
+    .page-description {
+      max-width: 480px;
+      margin-top: 12px;
+
+      color: var(--text-soft);
+      font-family: var(--display-font);
+      font-size: 11px;
+      line-height: 1.8;
+      letter-spacing: .025em;
+    }
+
+    .heading-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 7px;
+
+      color: var(--text-faint);
+      font-family: var(--mono-font);
+      font-size: 8px;
+      letter-spacing: .06em;
+      white-space: nowrap;
+    }
+
+    .heading-meta strong {
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    /* =========================================================
+       Statistics
+    ========================================================= */
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .stat-card {
+      position: relative;
+
+      min-width: 0;
+      min-height: 122px;
+      padding: 18px;
+
+      border-radius: 19px;
+    }
+
+    .stat-label {
+      color: var(--text-soft);
+      font-family: var(--mono-font);
+      font-size: 8px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .stat-value {
+      margin-top: 16px;
+
+      font-family: var(--display-font);
+      font-size: 31px;
+      font-weight: 600;
+      letter-spacing: -.045em;
+      line-height: 1;
+    }
+
+    .stat-footer {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+
+      margin-top: 12px;
+
+      color: var(--text-faint);
+      font-size: 9px;
+    }
+
+    .stat-footer .positive {
+      color: var(--success);
+    }
+
+    .stat-symbol {
+      position: absolute;
+      right: 17px;
+      top: 16px;
+
+      color: rgba(78, 185, 223, .35);
+      font-family: var(--display-font);
+      font-size: 24px;
+    }
+
+    /* =========================================================
+       Main dashboard grid
+    ========================================================= */
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(280px, .7fr);
+      gap: 18px;
+
+      min-height: 0;
+    }
+
+    .section-card {
+      min-width: 0;
+      padding: 22px;
+
+      border-radius: 22px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+
+      margin-bottom: 19px;
+    }
+
+    .section-title {
+      font-family: var(--display-font);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .01em;
+    }
+
+    .section-subtitle {
+      margin-top: 5px;
+
+      color: var(--text-faint);
+      font-family: var(--mono-font);
+      font-size: 8px;
+      letter-spacing: .05em;
+    }
+
+    .section-link {
+      color: var(--accent-strong);
+      background: transparent;
+
+      cursor: pointer;
+
+      font-family: var(--mono-font);
+      font-size: 8px;
+      letter-spacing: .06em;
+    }
+
+    /* =========================================================
+       Featured archive
+    ========================================================= */
+
+    .featured-archive {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .archive-card {
+      position: relative;
+
+      min-height: 215px;
+      padding: 18px;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      border-radius: 17px;
+
+      cursor: pointer;
+    }
+
+    .archive-card::before {
+      content: "";
+
+      position: absolute;
+      inset: 0;
+
+      border-radius: inherit;
+      pointer-events: none;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255, 255, 255, .18),
+          transparent 50%
+        );
+    }
+
+    .archive-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .archive-type {
+      color: var(--text-soft);
+      font-family: var(--mono-font);
+      font-size: 8px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .archive-state {
+      padding: 5px 8px;
+
+      border: 1px solid rgba(101, 200, 154, .25);
+      border-radius: 8px;
+
+      color: #4eaa83;
+      background: rgba(101, 200, 154, .09);
+
+      font-family: var(--mono-font);
+      font-size: 7px;
+      letter-spacing: .04em;
+    }
+
+    .archive-art {
+      position: relative;
+
+      display: grid;
+      place-items: center;
+
+      height: 72px;
+    }
+
+    .archive-art::before {
+      content: "";
+
+      position: absolute;
+
+      width: 76px;
+      height: 76px;
+
+      border: 1px solid rgba(255, 255, 255, .58);
+      border-radius: 25px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(255, 255, 255, .3),
+          rgba(120, 204, 233, .08)
+        );
+
+      transform: rotate(13deg);
+
+      box-shadow:
+        0 12px 25px rgba(75, 157, 193, .08),
+        inset 0 1px 0 rgba(255, 255, 255, .75);
+    }
+
+    .archive-art-symbol {
+      position: relative;
+      z-index: 1;
+
+      color: rgba(23, 56, 77, .72);
+      font-family: var(--display-font);
+      font-size: 45px;
+      font-weight: 500;
+      letter-spacing: -.08em;
+    }
+
+    .archive-name {
+      font-family: var(--display-font);
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -.025em;
+    }
+
+    .archive-meta {
+      margin-top: 6px;
+
+      color: var(--text-soft);
+      font-family: var(--mono-font);
+      font-size: 8px;
+      letter-spacing: .03em;
+    }
+
+    .archive-progress {
+      height: 3px;
+      margin-top: 15px;
+
+      overflow: hidden;
+      border-radius: 5px;
+
+      background: rgba(120, 204, 233, .13);
+    }
+
+    .archive-progress span {
+      display: block;
+      height: 100%;
+
+      border-radius: inherit;
+      background:
+        linear-gradient(
+          90deg,
+          var(--accent),
+          var(--accent-strong)
+        );
+    }
+
+    /* =========================================================
+       Recent activity
+    ========================================================= */
+
+    .activity-list {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .activity-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      min-width: 0;
+      padding: 11px 10px;
+
+      border: 1px solid transparent;
+      border-radius: 12px;
+
+      cursor: pointer;
+    }
+
+    .activity-item:hover {
+      border-color: rgba(255, 255, 255, .62);
+      background: rgba(255, 255, 255, .25);
+    }
+
+    .activity-icon {
+      width: 32px;
+      height: 32px;
+
+      display: grid;
+      place-items: center;
+
+      flex: 0 0 auto;
+
+      border: 1px solid rgba(255, 255, 255, .62);
+      border-radius: 10px;
+
+      color: var(--accent-strong);
+      background: rgba(255, 255, 255, .24);
+
+      font-size: 12px;
+    }
+
+    .activity-copy {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .activity-title {
+      overflow: hidden;
+
+      color: var(--text-main);
+      font-family: var(--display-font);
+      font-size: 10px;
+      font-weight: 600;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .activity-description {
+      margin-top: 4px;
+
+      overflow: hidden;
+
+      color: var(--text-faint);
+      font-size: 8px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .activity-time {
+      color: var(--text-faint);
+      font-family: var(--mono-font);
+      font-size: 7px;
+      white-space: nowrap;
+    }
+
+    /* =========================================================
+       Quick access
+    ========================================================= */
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .quick-item {
+      min-height: 91px;
+      padding: 14px;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      border-radius: 15px;
+
+      cursor: pointer;
+    }
+
+    .quick-symbol {
+      color: var(--accent-strong);
+      font-size: 17px;
+    }
+
+    .quick-name {
+      margin-top: 12px;
+
+      font-family: var(--display-font);
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .quick-description {
+      margin-top: 4px;
+
+      color: var(--text-faint);
+      font-size: 8px;
+      line-height: 1.5;
+    }
+
+    /* =========================================================
+       Bottom notice
+    ========================================================= */
+
+    .bottom-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(260px, .8fr);
+      gap: 18px;
+    }
+
+    .notice-card {
+      min-height: 112px;
+      padding: 19px 22px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+
+      border-radius: 20px;
+    }
+
+    .notice-kicker {
+      color: var(--accent-strong);
+      font-family: var(--mono-font);
+      font-size: 8px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .notice-title {
+      margin-top: 8px;
+
+      font-family: var(--display-font);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .notice-copy {
+      margin-top: 6px;
+
+      color: var(--text-soft);
+      font-size: 9px;
+      line-height: 1.6;
+    }
+
+    .notice-button {
+      min-width: 112px;
+      height: 40px;
+      padding: 0 15px;
+
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+
+      color: var(--text-main);
+      background: rgba(255, 255, 255, .3);
+
+      cursor: pointer;
+
+      font-family: var(--display-font);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: .04em;
+    }
+
+    /* =========================================================
+       Mobile
+    ========================================================= */
+
+    .mobile-menu-button {
+      display: none;
+    }
+
+    @media (max-width: 1100px) {
+      .app-shell {
+        grid-template-columns: 210px minmax(0, 1fr);
+        padding: 17px;
+        gap: 15px;
+      }
+
+      .sidebar {
+        min-height: calc(100vh - 34px);
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .dashboard-grid,
+      .bottom-row {
+        grid-template-columns: 1fr;
+      }
+
+      .main-area {
+        min-height: calc(100vh - 34px);
+      }
+    }
+
+    @media (max-width: 760px) {
+      body {
+        overflow: auto;
+      }
+
+      .scene {
+        min-height: 100svh;
+        overflow: visible;
+      }
+
+      .app-shell {
+        display: block;
+        padding: 12px;
+      }
+
+      .sidebar {
+        position: fixed;
+        inset: 12px auto 12px 12px;
+
+        z-index: 50;
+
+        width: min(285px, calc(100vw - 45px));
+        min-height: auto;
+        height: calc(100svh - 24px);
+
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+
+        transform: translateX(-18px);
+
+        transition:
+          opacity 250ms ease,
+          visibility 250ms ease,
+          transform 250ms ease;
+      }
+
+      .sidebar.is-open {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: translateX(0);
+      }
+
+      .mobile-menu-button {
+        display: grid;
+        place-items: center;
+
+        width: 40px;
+        height: 40px;
+
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+
+        color: var(--text-main);
+        background: rgba(255, 255, 255, .28);
+
+        cursor: pointer;
+      }
+
+      .main-area {
+        min-height: calc(100svh - 24px);
+      }
+
+      .topbar {
+        min-height: 62px;
+        padding: 11px 13px;
+        border-radius: 18px;
+      }
+
+      .breadcrumb {
+        font-size: 8px;
+        gap: 4px;
+        flex-wrap: nowrap;
+        min-width: 0;
+      }
+
+      .breadcrumb-link {
+        color: var(--accent-strong);
+        font-size: 11px;
+        font-weight: 600;
+        padding: 3px;
+      }
+
+      .breadcrumb-link:first-of-type {
+        display: none;
+      }
+
+      .search-form {
+        width: min(270px, 65vw);
+      }
+
+      .search-shell {
+      position: relative;
+      display: flex;
+      align-items: center;
+      flex: 0 0 auto;
+    }
+
+    .search-trigger {
+      flex: 0 0 auto;
+    }
+
+    .search-form {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      width: min(360px, 42vw);
+      height: 38px;
+      padding: 0 9px 0 12px;
+      border: 1px solid var(--glass-border);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .34);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .65);
+      backdrop-filter: blur(16px) saturate(108%);
+      -webkit-backdrop-filter: blur(16px) saturate(108%);
+    }
+
+    .search-shell.is-open .search-trigger {
+      display: none;
+    }
+
+    .search-shell.is-open .search-form {
+      display: flex;
+      animation: searchExpand 220ms ease both;
+    }
+
+    .search-form-icon {
+      color: var(--accent-strong);
+      font-size: 14px;
+    }
+
+    .search-form input {
+      min-width: 0;
+      flex: 1;
+      border: 0;
+      outline: 0;
+      color: var(--text-main);
+      background: transparent;
+      font-size: 10px;
+    }
+
+    .search-form input::placeholder {
+      color: var(--text-faint);
+    }
+
+    .search-close {
+      color: var(--text-soft);
+      background: transparent;
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .breadcrumb-link {
+      border: 0;
+      padding: 4px 5px;
+      border-radius: 7px;
+      color: var(--text-faint);
+      background: transparent;
+      cursor: pointer;
+      font: inherit;
+      font-size: 9px;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      transition: color var(--transition), background var(--transition);
+    }
+
+    .breadcrumb-link {
+      color: var(--accent-strong);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .breadcrumb-link:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, .28);
+    }
+
+    @keyframes searchExpand {
+      from { opacity: 0; transform: translateX(-8px) scaleX(.92); }
+      to { opacity: 1; transform: translateX(0) scaleX(1); }
+    }
+
+    .topbar-actions {
+        gap: 6px;
+      }
+
+      .topbar-button {
+        width: 36px;
+        height: 36px;
+      }
+
+      .topbar-button.language {
+        padding: 0 9px;
+      }
+
+      .page-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+
+        padding: 8px 3px 0;
+      }
+
+      .page-title {
+        font-size: 32px;
+      }
+
+      .page-description {
+        font-size: 10px;
+      }
+
+      .heading-meta {
+        align-items: flex-start;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .stat-card {
+        min-height: 108px;
+        padding: 15px;
+      }
+
+      .stat-value {
+        font-size: 28px;
+      }
+
+      .dashboard-grid,
+      .bottom-row {
+        gap: 12px;
+      }
+
+      .section-card {
+        padding: 16px;
+        border-radius: 18px;
+      }
+
+      .featured-archive {
+        grid-template-columns: 1fr;
+      }
+
+      .archive-card {
+        min-height: 190px;
+      }
+
+      .quick-grid {
+        gap: 8px;
+      }
+
+      .notice-card {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 18px;
+      }
+
+      .notice-button {
+        width: 100%;
+      }
+
+      .mobile-overlay {
+        position: fixed;
+        inset: 0;
+
+        z-index: 40;
+
+        background: rgba(23, 56, 77, .08);
+        backdrop-filter: blur(3px);
+
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+
+        transition:
+          opacity 250ms ease,
+          visibility 250ms ease;
+      }
+
+      .mobile-overlay.is-visible {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  
+    /* =========================================================
+       SOLYAN ARCHIVE V0.9.6 refinements
+    ========================================================= */
+
+    .page-heading {
+      position: relative;
+      min-height: 118px;
+      padding-bottom: 28px;
+    }
+
+    .heading-meta {
+      position: absolute;
+      right: 5px;
+      bottom: 0;
+      align-items: flex-end;
+      gap: 3px;
+      font-size: 7px;
+      opacity: .72;
+    }
+
+    .heading-meta strong {
+      font-size: 7px;
+      font-weight: 500;
+    }
+
+    .search-form {
+      width: min(420px, 46vw);
+      border-color: rgba(78, 185, 223, .34);
+      background: rgba(214, 237, 248, .72);
+      box-shadow:
+        0 4px 14px rgba(75, 157, 193, .08),
+        inset 0 1px 0 rgba(255, 255, 255, .86);
+    }
+
+    @media (max-width: 760px) {
+      .page-heading {
+        min-height: 132px;
+        padding-bottom: 30px;
+      }
+
+      .heading-meta {
+        right: 3px;
+        bottom: 0;
+        align-items: flex-end;
+      }
+
+      .search-form {
+        width: min(320px, 72vw);
+        background: rgba(214, 237, 248, .78);
+        border-color: rgba(78, 185, 223, .38);
+      }
+    }
+
+  
+    /* V0.9.7 refinements */
+    /* Keep the expanded search field as a capsule; darken only the collapsed button. */
+    .search-trigger {
+      /* Preserve the original clear glass tone; improve visibility through edge definition and light. */
+      border-color: rgba(255, 255, 255, .88);
+      background:
+        linear-gradient(
+          135deg,
+          rgba(255, 255, 255, .42),
+          rgba(255, 255, 255, .20)
+        );
+      box-shadow:
+        0 5px 16px rgba(80, 145, 177, .12),
+        inset 0 1px 0 rgba(255, 255, 255, .92),
+        inset 0 -1px 0 rgba(255, 255, 255, .22),
+        0 0 0 1px rgba(255, 255, 255, .18);
+    }
+
+    .search-form {
+      border-radius: 999px;
+    }
+
+    .heading-meta {
+      position: fixed;
+      right: 24px;
+      bottom: 20px;
+      z-index: 20;
+      align-items: flex-end;
+      gap: 5px;
+      color: rgba(107, 137, 157, .62);
+      font-size: 9px;
+      opacity: .78;
+      pointer-events: none;
+    }
+
+    .heading-meta strong {
+      color: rgba(23, 56, 77, .58);
+      font-size: 9px;
+      font-weight: 500;
+    }
+
+    @media (max-width: 760px) {
+      .search-trigger {
+        background:
+          linear-gradient(
+            135deg,
+            rgba(255, 255, 255, .48),
+            rgba(255, 255, 255, .22)
+          );
+      }
+      .heading-meta {
+        right: 14px;
+        bottom: 14px;
+        font-size: 8px;
+      }
+      .heading-meta strong {
+        font-size: 8px;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="scene">
+
+    <!-- Enhanced background -->
+    <div class="light-field" aria-hidden="true">
+      <div class="light-ribbon"></div>
+      <div class="light-ribbon two"></div>
+      <div class="light-ribbon three"></div>
+      <div class="glass-haze"></div>
+    </div>
+
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <div class="app-shell">
+
+      <!-- =====================================================
+           Sidebar
+      ====================================================== -->
+
+      <aside class="sidebar glass" id="sidebar">
+
+        <div class="brand-block">
+          <div class="brand-symbol">S</div>
+
+          <div class="brand-copy">
+            <div class="brand-name">SOLYAN ARCHIVE</div>
+            <div class="brand-subtitle">PERSONAL GAME ARCHIVE</div>
+          </div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <nav>
+
+          <div class="nav-group">
+            <div class="nav-group-label">档案核心</div>
+
+            <button class="nav-item interactive active" data-page="overview">
+              <span class="nav-icon">⌂</span>
+              <span class="nav-label">首页</span>
+            </button>
+
+            <button class="nav-item interactive" data-page="archive">
+              <span class="nav-icon">▣</span>
+              <span class="nav-label">档案馆</span>
+              <span class="nav-count">24</span>
+            </button>
+
+          </div>
+
+          <div class="nav-group">
+            <div class="nav-group-label">观众参与</div>
+
+            <button class="nav-item interactive" data-page="vote">
+              <span class="nav-icon">◈</span>
+              <span class="nav-label">企划投票</span>
+            </button>
+
+            <button class="nav-item interactive" data-page="request">
+              <span class="nav-icon">✧</span>
+              <span class="nav-label">攻略委托</span>
+            </button>
+          </div>
+
+          <div class="nav-group">
+            <div class="nav-group-label">创作者项目</div>
+
+            <button class="nav-item interactive" data-page="store">
+              <span class="nav-icon">◇</span>
+              <span class="nav-label">档案商店</span>
+            </button>
+
+            <button class="nav-item interactive" data-page="guardian">
+              <span class="nav-icon">⬡</span>
+              <span class="nav-label">档案守护者</span>
+            </button>
+
+            <button class="nav-item interactive" data-page="creator">
+              <span class="nav-icon">S</span>
+              <span class="nav-label">创作者</span>
+            </button>
+          </div>
+
+          <div class="nav-group">
+            <div class="nav-group-label">信息</div>
+
+            <button class="nav-item interactive" data-page="updates">
+              <span class="nav-icon">↗</span>
+              <span class="nav-label">更新日志</span>
+            </button>
+
+            <button class="nav-item interactive" data-page="about">
+              <span class="nav-icon">ⓘ</span>
+              <span class="nav-label">关于档案馆</span>
+            </button>
+          </div>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+          <div class="system-status">
+            <span class="status-dot"></span>
+            <span id="systemStatus">档案系统在线</span>
+          </div>
+
+          <div class="sidebar-version">
+            SOLYAN ARCHIVE · V0.9.7
+          </div>
+        </div>
+
+      </aside>
+
+      <!-- =====================================================
+           Main content
+      ====================================================== -->
+
+      <main class="main-area">
+
+        <header class="topbar glass">
+
+          <div class="breadcrumb">
+            <button
+              class="mobile-menu-button"
+              id="mobileMenuButton"
+              aria-label="打开导航"
+            >
+              ☰
+            </button>
+
+            <div class="search-shell" id="searchShell">
+              <button
+                class="topbar-button interactive search-trigger"
+                id="searchButton"
+                aria-label="展开搜索"
+               
+                type="button"
+              >
+                ⌕
+              </button>
+              <form class="search-form" id="searchForm" role="search">
+                <span class="search-form-icon">⌕</span>
+                <input
+                  id="searchInput"
+                  type="search"
+                  placeholder="搜索游戏、人物、地点、组织……"
+                  aria-label="搜索资料"
+                  autocomplete="off"
+                />
+                <button class="search-close" id="searchClose" type="button" aria-label="关闭搜索">×</button>
+              </form>
+            </div>
+
+            <span class="breadcrumb-root" id="breadcrumbRoot">SOLYAN ARCHIVE</span>
+            <span class="breadcrumb-separator">/</span>
+            <button class="breadcrumb-link" data-page="overview" id="breadcrumbHome">首页</button>
+            <span class="breadcrumb-separator breadcrumb-current-separator" id="breadcrumbCurrentSeparator" style="display:none">/</span>
+            <span class="breadcrumb-current" id="breadcrumbCurrent" style="display:none"></span>
+          </div>
+
+          <div class="topbar-actions">
+
+            <button
+              class="topbar-button interactive"
+              id="themeButton"
+              aria-label="切换主题"
+            >
+              ✧
+            </button>
+
+            <button
+              class="topbar-button language interactive"
+              id="languageButton"
+            >
+              中 / EN
+            </button>
+
+          </div>
+
+        </header>
+
+        <section class="page-heading">
+
+          <div>
+            <div class="page-kicker" id="pageKicker">
+              首页
+            </div>
+
+            <h1 class="page-title" id="pageTitle">
+              档案馆总览
+            </h1>
+
+            <p class="page-description" id="pageDescription">
+              一个用于保存游戏、故事、研究与创作痕迹的私人数字空间。
+              在这里，每一次游玩都可以成为值得被记录的档案。
+            </p>
+          </div>
+
+          <div class="heading-meta">
+            <span>档案状态</span>
+            <strong>在线 / 稳定</strong>
+            <span>最后同步 · 2026.09.21</span>
+          </div>
+
+        </section>
+
+        <!-- Statistics -->
+
+        <section class="stats-grid">
+
+          <article class="stat-card glass interactive">
+            <div class="stat-label">游戏档案</div>
+            <div class="stat-value">24</div>
+            <div class="stat-footer">
+              <span class="positive">+3</span>
+              <span>本月新增档案</span>
+            </div>
+            <div class="stat-symbol">▣</div>
+          </article>
+
+          <article class="stat-card glass interactive">
+            <div class="stat-label">视频记录</div>
+            <div class="stat-value">86</div>
+            <div class="stat-footer">
+              <span class="positive">+12</span>
+              <span>视频记录</span>
+            </div>
+            <div class="stat-symbol">▷</div>
+          </article>
+
+          <article class="stat-card glass interactive">
+            <div class="stat-label">攻略条目</div>
+            <div class="stat-value">31</div>
+            <div class="stat-footer">
+              <span class="positive">+5</span>
+              <span>攻略与研究</span>
+            </div>
+            <div class="stat-symbol">✧</div>
+          </article>
+
+          <article class="stat-card glass interactive">
+            <div class="stat-label">档案笔记</div>
+            <div class="stat-value">142</div>
+            <div class="stat-footer">
+              <span>个人记录与资料</span>
+            </div>
+            <div class="stat-symbol">⌘</div>
+          </article>
+
+        </section>
+
+        <!-- Main dashboard -->
+
+        <section class="dashboard-grid">
+
+          <!-- Featured archives -->
+
+          <article class="section-card glass">
+
+            <div class="section-header">
+              <div>
+                <div class="section-title">精选档案</div>
+                <div class="section-subtitle">精选档案</div>
+              </div>
+
+              <button class="section-link" data-page="archive">
+                查看全部 →
+              </button>
+            </div>
+
+            <div class="featured-archive">
+
+              <article class="archive-card glass interactive">
+
+                <div class="archive-card-top">
+                  <span class="archive-type">游戏档案 / 001</span>
+                  <span class="archive-state">进行中</span>
+                </div>
+
+                <div class="archive-art">
+                  <div class="archive-art-symbol">RE</div>
+                </div>
+
+                <div>
+                  <div class="archive-name">Resident Evil</div>
+                  <div class="archive-meta">
+                    生存恐怖 · 故事 · 研究
+                  </div>
+
+                  <div class="archive-progress">
+                    <span style="width: 68%;"></span>
+                  </div>
+                </div>
+
+              </article>
+
+              <article class="archive-card glass interactive">
+
+                <div class="archive-card-top">
+                  <span class="archive-type">游戏档案 / 002</span>
+                  <span class="archive-state">进行中</span>
+                </div>
+
+                <div class="archive-art">
+                  <div class="archive-art-symbol">BS</div>
+                </div>
+
+                <div>
+                  <div class="archive-name">Black Souls</div>
+                  <div class="archive-meta">
+                    RPG · 叙事 · 结局
+                  </div>
+
+                  <div class="archive-progress">
+                    <span style="width: 42%;"></span>
+                  </div>
+                </div>
+
+              </article>
+
+            </div>
+
+          </article>
+
+          <!-- Recent activity -->
+
+          <article class="section-card glass">
+
+            <div class="section-header">
+              <div>
+                <div class="section-title">最近更新</div>
+                <div class="section-subtitle">最近动态</div>
+              </div>
+
+              <button class="section-link">
+                全部 →
+              </button>
+            </div>
+
+            <div class="activity-list">
+
+              <div class="activity-item interactive">
+                <div class="activity-icon">▣</div>
+
+                <div class="activity-copy">
+                  <div class="activity-title">
+                    Resident Evil 0 · 剧情档案更新
+                  </div>
+
+                  <div class="activity-description">
+                    新增人物与组织相关资料
+                  </div>
+                </div>
+
+                <div class="activity-time">今天</div>
+              </div>
+
+              <div class="activity-item interactive">
+                <div class="activity-icon">▷</div>
+
+                <div class="activity-copy">
+                  <div class="activity-title">
+                    Black Souls · 流程记录
+                  </div>
+
+                  <div class="activity-description">
+                    新增完整流程视频记录
+                  </div>
+                </div>
+
+                <div class="activity-time">2D</div>
+              </div>
+
+              <div class="activity-item interactive">
+                <div class="activity-icon">✧</div>
+
+                <div class="activity-copy">
+                  <div class="activity-title">
+                    攻略委托 · 新请求
+                  </div>
+
+                  <div class="activity-description">
+                    等待创作者查看
+                  </div>
+                </div>
+
+                <div class="activity-time">4D</div>
+              </div>
+
+              <div class="activity-item interactive">
+                <div class="activity-icon">↗</div>
+
+                <div class="activity-copy">
+                  <div class="activity-title">
+                    SOLYAN ARCHIVE · 系统更新
+                  </div>
+
+                  <div class="activity-description">
+                    总览页面视觉测试版本
+                  </div>
+                </div>
+
+                <div class="activity-time">7D</div>
+              </div>
+
+            </div>
+
+          </article>
+
+        </section>
+
+        <!-- Quick access and notice -->
+
+        <section class="bottom-row">
+
+          <article class="section-card glass">
+
+            <div class="section-header">
+              <div>
+                <div class="section-title">快速访问</div>
+                <div class="section-subtitle">QUICK ACCESS</div>
+              </div>
+            </div>
+
+            <div class="quick-grid">
+
+              <div class="quick-item glass interactive" data-page="archive">
+                <div class="quick-symbol">▣</div>
+                <div>
+                  <div class="quick-name">浏览档案馆</div>
+                  <div class="quick-description">探索全部游戏档案</div>
+                </div>
+              </div>
+
+              <div class="quick-item glass interactive" data-page="vote">
+                <div class="quick-symbol">◈</div>
+                <div>
+                  <div class="quick-name">参与企划</div>
+                  <div class="quick-description">决定未来内容方向</div>
+                </div>
+              </div>
+
+              <div class="quick-item glass interactive" data-page="request">
+                <div class="quick-symbol">✧</div>
+                <div>
+                  <div class="quick-name">提交委托</div>
+                  <div class="quick-description">提出攻略或研究需求</div>
+                </div>
+              </div>
+
+            </div>
+
+          </article>
+
+          <article class="notice-card glass">
+
+            <div>
+              <div class="notice-kicker">ARCHIVE MESSAGE</div>
+
+              <div class="notice-title">
+                每一次游玩，都值得被保存。
+              </div>
+
+              <div class="notice-copy">
+                SOLYAN ARCHIVE 正在持续建设中。
+                更多游戏、故事与记忆将逐步归档。
+              </div>
+            </div>
+
+            <button class="notice-button interactive" id="aboutButton">
+              关于档案馆 →
+            </button>
+
+          </article>
+
+        </section>
+
+      </main>
+
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const sidebar = document.getElementById("sidebar");
+      const mobileMenuButton = document.getElementById("mobileMenuButton");
+      const mobileOverlay = document.getElementById("mobileOverlay");
+
+      const languageButton = document.getElementById("languageButton");
+      const themeButton = document.getElementById("themeButton");
+      const searchButton = document.getElementById("searchButton");
+      const searchShell = document.getElementById("searchShell");
+      const searchForm = document.getElementById("searchForm");
+      const searchInput = document.getElementById("searchInput");
+      const searchClose = document.getElementById("searchClose");
+
+      const breadcrumbCurrent =
+        document.getElementById("breadcrumbCurrent");
+
+      const breadcrumbRoot = document.getElementById("breadcrumbRoot");
+      const breadcrumbHome = document.getElementById("breadcrumbHome");
+
+      const pageKicker =
+        document.getElementById("pageKicker");
+
+      const pageTitle =
+        document.getElementById("pageTitle");
+
+      const pageDescription =
+        document.getElementById("pageDescription");
+
+      const systemStatus =
+        document.getElementById("systemStatus");
+
+      const aboutButton =
+        document.getElementById("aboutButton");
+
+      let isEnglish = false;
+      let isDark = false;
+
+      const pageData = {
+        overview: {
+          zh: {
+            breadcrumb: "OVERVIEW",
+            kicker: "首页",
+            title: "首页",
+            description:
+              "一个用于保存游戏、故事、研究与创作痕迹的私人数字空间。在这里，每一次游玩都可以成为值得被记录的档案。"
+          },
+          en: {
+            breadcrumb: "OVERVIEW",
+            kicker: "首页",
+            title: "Archive Overview",
+            description:
+              "A personal digital space for preserving games, stories, research, and creative traces."
+          }
+        },
+
+        archive: {
+          zh: {
+            breadcrumb: "ARCHIVE",
+            kicker: "GAME ARCHIVE",
+            title: "档案馆",
+            description:
+              "浏览所有已经收录、正在记录或等待整理的游戏档案。"
+          },
+          en: {
+            breadcrumb: "ARCHIVE",
+            kicker: "GAME ARCHIVE",
+            title: "Game Archive",
+            description:
+              "Explore every game archive that has been collected, recorded, or prepared for preservation."
+          }
+        },
+
+        search: {
+          zh: {
+            breadcrumb: "SEARCH",
+            kicker: "ARCHIVE SEARCH",
+            title: "搜索",
+            description:
+              "从游戏、攻略、视频记录与研究资料中寻找你需要的内容。"
+          },
+          en: {
+            breadcrumb: "SEARCH",
+            kicker: "ARCHIVE SEARCH",
+            title: "Search",
+            description:
+              "Find games, guides, video records, and research materials across the archive."
+          }
+        },
+
+        vote: {
+          zh: {
+            breadcrumb: "VOTING",
+            kicker: "AUDIENCE PARTICIPATION",
+            title: "企划投票",
+            description:
+              "参与决定未来的游戏选择、视频企划与档案馆发展方向。"
+          },
+          en: {
+            breadcrumb: "VOTING",
+            kicker: "AUDIENCE PARTICIPATION",
+            title: "Project Voting",
+            description:
+              "Take part in deciding future games, video projects, and archive directions."
+          }
+        },
+
+        request: {
+          zh: {
+            breadcrumb: "REQUESTS",
+            kicker: "GUIDE REQUESTS",
+            title: "攻略委托",
+            description:
+              "提交你希望看到的攻略、研究或游戏内容请求。"
+          },
+          en: {
+            breadcrumb: "REQUESTS",
+            kicker: "GUIDE REQUESTS",
+            title: "Guide Requests",
+            description:
+              "Submit requests for guides, research, or other game-related content."
+          }
+        },
+
+        store: {
+          zh: {
+            breadcrumb: "STORE",
+            kicker: "ARCHIVE STORE",
+            title: "档案商店",
+            description:
+              "未来用于展示与提供数字资料、创作素材及相关产品。"
+          },
+          en: {
+            breadcrumb: "STORE",
+            kicker: "ARCHIVE STORE",
+            title: "档案商店",
+            description:
+              "A future space for digital materials, creative assets, and related products."
+          }
+        },
+
+        guardian: {
+          zh: {
+            breadcrumb: "GUARDIANS",
+            kicker: "ARCHIVE GUARDIANS",
+            title: "档案守护者",
+            description:
+              "了解支持档案馆长期建设的方式，以及参与档案保存的可能性。"
+          },
+          en: {
+            breadcrumb: "GUARDIANS",
+            kicker: "ARCHIVE GUARDIANS",
+            title: "Archive Guardians",
+            description:
+              "Discover ways to support the long-term development and preservation of the archive."
+          }
+        },
+
+        creator: {
+          zh: {
+            breadcrumb: "CREATOR",
+            kicker: "SOLYAN",
+            title: "创作者",
+            description:
+              "了解 SOLYAN 的创作方向、工作方式与正在进行的项目。"
+          },
+          en: {
+            breadcrumb: "CREATOR",
+            kicker: "SOLYAN",
+            title: "Creator",
+            description:
+              "Discover SOLYAN's creative direction, workflow, and ongoing projects."
+          }
+        },
+
+        updates: {
+          zh: {
+            breadcrumb: "UPDATES",
+            kicker: "CHANGELOG",
+            title: "更新日志",
+            description:
+              "记录档案馆的版本变化、功能更新与重要阶段。"
+          },
+          en: {
+            breadcrumb: "UPDATES",
+            kicker: "CHANGELOG",
+            title: "Changelog",
+            description:
+              "A record of archive versions, feature updates, and important milestones."
+          }
+        },
+
+        about: {
+          zh: {
+            breadcrumb: "ABOUT",
+            kicker: "ABOUT THE ARCHIVE",
+            title: "关于档案馆",
+            description:
+              "SOLYAN ARCHIVE 是一个用于保存游戏体验、故事、研究与创作记忆的长期数字档案项目。"
+          },
+          en: {
+            breadcrumb: "ABOUT",
+            kicker: "ABOUT THE ARCHIVE",
+            title: "About the Archive",
+            description:
+              "SOLYAN ARCHIVE is a long-term digital archive for preserving game experiences, stories, research, and creative memories."
+          }
+        }
+      };
+
+      function triggerFeedback(element) {
+        if (!element) return;
+
+        element.classList.remove("is-sweeping");
+        void element.offsetWidth;
+        element.classList.add("is-sweeping");
+
+        window.setTimeout(() => {
+          element.classList.remove("is-sweeping");
+        }, 760);
+      }
+
+      function closeMobileMenu() {
+        sidebar.classList.remove("is-open");
+        mobileOverlay.classList.remove("is-visible");
+      }
+
+      function openMobileMenu() {
+        sidebar.classList.add("is-open");
+        mobileOverlay.classList.add("is-visible");
+      }
+
+      function updatePage(pageKey) {
+        const data = pageData[pageKey] || pageData.overview;
+        const language = isEnglish ? "en" : "zh";
+
+        const isOverview = pageKey === "overview";
+        breadcrumbRoot.textContent = isEnglish ? "SOLYAN ARCHIVE" : "SOLYAN ARCHIVE";
+        breadcrumbHome.textContent = isEnglish ? "OVERVIEW" : "首页";
+        const pageLabels = {
+          overview: { zh: "首页", en: "OVERVIEW" },
+          archive: { zh: "档案馆", en: "ARCHIVE" },
+          vote: { zh: "企划投票", en: "PROJECT VOTE" },
+          request: { zh: "攻略委托", en: "GUIDE REQUESTS" },
+          store: { zh: "档案商店", en: "ARCHIVE STORE" },
+          guardian: { zh: "档案守护者", en: "ARCHIVE GUARDIANS" },
+          creator: { zh: "创作者", en: "CREATOR" },
+          updates: { zh: "更新日志", en: "CHANGELOG" },
+          about: { zh: "关于档案馆", en: "ABOUT ARCHIVE" },
+          search: { zh: "搜索", en: "SEARCH" }
+        };
+        const localizedPageLabel = pageLabels[pageKey]?.[language] || data[language].breadcrumb;
+        breadcrumbCurrent.textContent = isOverview ? "" : localizedPageLabel;
+        breadcrumbCurrent.style.display = isOverview ? "none" : "inline";
+        breadcrumbCurrentSeparator.style.display = isOverview ? "none" : "inline";
+        pageKicker.textContent = "";
+        pageTitle.textContent = localizedPageLabel;
+        pageDescription.textContent = data[language].description;
+
+        document.querySelectorAll(".nav-item").forEach((item) => {
+          item.classList.toggle(
+            "active",
+            item.dataset.page === pageKey
+          );
+        });
+
+        if (window.innerWidth <= 760) {
+          closeMobileMenu();
+        }
+      }
+
+      function updateLanguage() {
+        languageButton.textContent = isEnglish ? "EN / 中" : "中 / EN";
+
+        const fixed = {
+          ".nav-group-label": isEnglish
+            ? ["ARCHIVE CORE", "AUDIENCE", "CREATOR PROJECTS", "INFORMATION"]
+            : ["档案核心", "观众参与", "创作者项目", "信息"],
+          ".nav-label": isEnglish
+            ? ["OVERVIEW", "ARCHIVE", "PROJECT VOTE", "GUIDE REQUESTS", "ARCHIVE STORE", "ARCHIVE GUARDIANS", "CREATOR", "CHANGELOG", "ABOUT ARCHIVE"]
+            : ["首页", "档案馆", "企划投票", "攻略委托", "档案商店", "档案守护者", "创作者", "更新日志", "关于档案馆"],
+          ".stat-label": isEnglish
+            ? ["GAME ARCHIVES", "VIDEO RECORDS", "GUIDE ENTRIES", "ARCHIVE NOTES"]
+            : ["游戏档案", "视频记录", "攻略条目", "档案笔记"],
+          ".stat-footer span:not(.positive)": isEnglish
+            ? ["NEW ARCHIVES THIS MONTH", "VIDEO RECORDS", "GUIDES & RESEARCH", "PERSONAL NOTES & MATERIALS"]
+            : ["本月新增档案", "视频记录", "攻略与研究", "个人记录与资料"],
+          ".section-title": isEnglish
+            ? ["FEATURED ARCHIVES", "RECENT UPDATES", "QUICK ACCESS"]
+            : ["精选档案", "最近更新", "快速访问"],
+          ".section-subtitle": isEnglish
+            ? ["FEATURED ARCHIVES", "RECENT ACTIVITY", "QUICK ACCESS"]
+            : ["精选档案", "最近动态", "快速访问"],
+          ".section-link": isEnglish ? ["VIEW ALL →", "ALL →"] : ["查看全部 →", "全部 →"],
+          ".quick-name": isEnglish
+            ? ["BROWSE ARCHIVE", "JOIN A PROJECT", "REQUEST A GUIDE", "CREATOR HUB"]
+            : ["浏览档案馆", "参与企划", "攻略委托", "创作者中心"],
+          ".quick-description": isEnglish
+            ? ["Explore all game archives", "Take part in upcoming projects", "Submit a guide request", "Enter the creator workspace"]
+            : ["探索全部游戏档案", "参与即将进行的企划", "提交攻略需求", "进入创作者工作区"],
+          ".archive-type": isEnglish ? ["GAME ARCHIVE / 001", "GAME ARCHIVE / 002"] : ["游戏档案 / 001", "游戏档案 / 002"],
+          ".archive-state": isEnglish ? ["IN PROGRESS", "IN PROGRESS"] : ["进行中", "进行中"],
+          ".notice-kicker": isEnglish ? ["ARCHIVE NOTICE"] : ["档案公告"],
+          ".notice-title": isEnglish ? ["A SPACE FOR EVERY PLAYTHROUGH"] : ["每一次游玩，都值得被记录"],
+          ".notice-button": isEnglish ? ["LEARN MORE →"] : ["了解更多 →"]
+        };
+        Object.entries(fixed).forEach(([selector, values]) => {
+          document.querySelectorAll(selector).forEach((el, i) => {
+            if (values[i] !== undefined) el.textContent = values[i];
+          });
+        });
+
+        const activityFixed = isEnglish
+          ? ["Resident Evil 0 · STORY ARCHIVE UPDATED", "New character and organization records", "TODAY", "Black Souls · PLAYTHROUGH LOG", "New complete playthrough video record", "2D", "GUIDE REQUEST · NEW REQUEST", "Awaiting creator review", "4D", "SOLYAN ARCHIVE · SYSTEM UPDATE", "Overview visual test build", "7D"]
+          : ["Resident Evil 0 · 剧情档案更新", "新增人物与组织相关资料", "今天", "Black Souls · 流程记录", "新增完整流程视频记录", "2D", "攻略委托 · 新请求", "等待创作者查看", "4D", "SOLYAN ARCHIVE · 系统更新", "总览页面视觉测试版本", "7D"];
+        [".activity-title", ".activity-description", ".activity-time"].forEach((selector, group) => {
+          document.querySelectorAll(selector).forEach((el, i) => {
+            const index = group === 0 ? i * 3 : group === 1 ? i * 3 + 1 : i * 3 + 2;
+            if (activityFixed[index] !== undefined) el.textContent = activityFixed[index];
+          });
+        });
+
+        systemStatus.textContent = isEnglish ? "ARCHIVE SYSTEM ONLINE" : "档案系统在线";
+        document.querySelector(".breadcrumb-root").textContent = "SOLYAN ARCHIVE";
+        document.querySelector("#breadcrumbHome").textContent = isEnglish ? "OVERVIEW" : "首页";
+
+        const searchInput = document.querySelector("#searchInput");
+        const searchButton = document.querySelector("#searchButton");
+        const searchClose = document.querySelector("#searchClose");
+        const mobileMenu = document.querySelector("#mobileMenuButton");
+        if (searchInput) {
+          searchInput.placeholder = isEnglish
+            ? "Search games, people, places, organizations…"
+            : "搜索游戏、人物、地点、组织……";
+          searchInput.setAttribute("aria-label", isEnglish ? "Search archive" : "搜索资料");
+        }
+        if (searchButton) {
+          searchButton.setAttribute("aria-label", isEnglish ? "Open search" : "展开搜索");
+          searchButton.title = isEnglish ? "Search archive" : "搜索资料";
+        }
+        if (searchClose) searchClose.setAttribute("aria-label", isEnglish ? "Close search" : "关闭搜索");
+        if (mobileMenu) mobileMenu.setAttribute("aria-label", isEnglish ? "Open navigation" : "打开导航");
+
+        updatePage(
+          document.querySelector(".nav-item.active")?.dataset.page || "overview"
+        );
+      }
+
+      function toggleTheme() {
+        isDark = !isDark;
+
+        if (isDark) {
+          document.documentElement.style.setProperty(
+            "--bg-1",
+            "#dcebf5"
+          );
+
+          document.documentElement.style.setProperty(
+            "--bg-2",
+            "#a9c5d8"
+          );
+
+          document.documentElement.style.setProperty(
+            "--bg-3",
+            "#eef6fb"
+          );
+
+          document.documentElement.style.setProperty(
+            "--text-main",
+            "#183449"
+          );
+
+          document.documentElement.style.setProperty(
+            "--accent-strong",
+            "#438fb5"
+          );
+        } else {
+          document.documentElement.style.setProperty(
+            "--bg-1",
+            "#eaf7ff"
+          );
+
+          document.documentElement.style.setProperty(
+            "--bg-2",
+            "#b9d9e8"
+          );
+
+          document.documentElement.style.setProperty(
+            "--bg-3",
+            "#edf5f9"
+          );
+
+          document.documentElement.style.setProperty(
+            "--text-main",
+            "#17384d"
+          );
+
+          document.documentElement.style.setProperty(
+            "--accent-strong",
+            "#4eb9df"
+          );
+        }
+
+        triggerFeedback(themeButton);
+      }
+
+      document.querySelectorAll(".interactive").forEach((element) => {
+        element.addEventListener("click", () => {
+          triggerFeedback(element);
+        });
+      });
+
+      document.querySelectorAll("[data-page]").forEach((element) => {
+        element.addEventListener("click", () => {
+          const pageKey = element.dataset.page;
+
+          if (pageData[pageKey]) {
+            updatePage(pageKey);
+          }
+        });
+      });
+
+      languageButton.addEventListener("click", () => {
+        isEnglish = !isEnglish;
+        updateLanguage();
+        triggerFeedback(languageButton);
+      });
+
+      themeButton.addEventListener("click", toggleTheme);
+
+      searchButton.addEventListener("click", () => {
+        searchShell.classList.add("is-open");
+        searchInput.focus();
+        triggerFeedback(searchButton);
+      });
+
+      searchForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        updatePage("search");
+        searchShell.classList.remove("is-open");
+        searchInput.value = "";
+      });
+
+      searchClose.addEventListener("click", () => {
+        searchShell.classList.remove("is-open");
+        searchInput.value = "";
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          searchShell.classList.remove("is-open");
+          searchInput.value = "";
+        }
+      });
+
+      mobileMenuButton.addEventListener("click", () => {
+        openMobileMenu();
+        triggerFeedback(mobileMenuButton);
+      });
+
+      mobileOverlay.addEventListener("click", closeMobileMenu);
+
+      aboutButton.addEventListener("click", () => {
+        updatePage("about");
+        triggerFeedback(aboutButton);
+      });
+
+      window.addEventListener("resize", () => {
+        if (window.innerWidth > 760) {
+          closeMobileMenu();
+        }
+      });
+
+      updatePage("overview");
+    })();
+  </script>
+</body>
+</html>
